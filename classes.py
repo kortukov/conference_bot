@@ -224,5 +224,5 @@ if __name__ == '__main__':
     elif mode == 'json':
         
         with open('event_list.json', 'w') as f:
-            json.dump(jsonpickle.encode(event_list),  f, indent = 2)
+            json.dump(jsonpickle.encode(event_list[0:20]),  f, indent = 2)
 
