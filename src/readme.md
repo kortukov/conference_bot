@@ -14,9 +14,9 @@
 Файл classes.py содержит все необходимые для чтения данных классы. Эти классы оттуда импортят другие файлы.
 
 Файл read_data.py непосредственно читает и сохраняет программу. У него 3 режима работы:
-- Вывод на stdout		python3 read_data.py 
-- Сохранение в json		python3 read_data.py json
-- Сохранение в pickle	python3 read_data.py pickle
+- Вывод на stdout:        python3 read_data.py 
+- Сохранение в json:        python3 read_data.py json
+- Сохранение в pickle:        python3 read_data.py pickle
 
 Путь к DOCX-файлу с программой сейчас прописан в код он вот такой: "../Program-2018_v4.docx". Это в начале main-а после проверки аргументов коммандной строки.
 
