@@ -21,8 +21,8 @@
 Путь к DOCX-файлу с программой сейчас прописан в код он вот такой: "../Program-2018_v4.docx". Это в начале main-а после проверки аргументов коммандной строки.
 
 Файл test.py используется чтобы проверить сохранённые данные в json или в pickle. Такие режимы работы:
-- Вывод из json на stdout		python3 test.py json
-- Вывод из pickle на stdout		python3 test.py pickle
+- Вывод из json на stdout:		python3 test.py json
+- Вывод из pickle на stdout:		python3 test.py pickle
 
 read_data.py создаёт файлы в родительском каталоге event_list.json или event_list.pickle. JSON можно читать и править в текстовом редакторе, для этого в него и сохраняем.
 
