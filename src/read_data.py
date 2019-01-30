@@ -129,7 +129,7 @@ if __name__ == '__main__':
             else:
                 event = Other(ts_begin, ts_end, current_place, title_ru, title_en)
 
-        if isinstance(event, FullEvent):
+        if isinstance(event, FullEvent) or isinstance(event, Other):
             #filling the list of talks
             talks_list = []
             j = 1
@@ -150,21 +150,35 @@ if __name__ == '__main__':
                     current_talk = talks_list[j].text
                     current_talk = current_talk.strip('\n')
                     current_authors = ""
+                    current_speaker = ""
                     k = 1
-                    while (j+k < len(talks_list)) and (not talks_list[j+k].bold): #using lazy logic
+                    while (j+k < len(talks_list)) and (not talks_list[j+k].bold): 
+                        if talks_list[j+k].underline:
+                            current_speaker = talks_list[j+k].text
+                        if talks_list[j+k].font.superscript:
+                            k = k + 1
+                            continue
                         current_authors = current_authors +  talks_list[j+k].text.strip('\n')
 
                         k = k + 1
-                    event.sublist.append((current_talk, current_authors))
+                    event.sublist.append((current_talk, current_authors, current_speaker))
+
                 j = j + 1
 
-            """for elem in event.sublist:
-                print("---")
-                print(elem[0])
-                print("Authors are:")
-                print(elem[1])"""
-            #print(event)
-            #print("=========")        
+        if isinstance(event, Other): #Looking for description
+            description_lines = []
+            description = ""
+            j = 1
+            while not "//" in document.paragraphs[i+2+j].text:
+                description_lines = description_lines + document.paragraphs[i+2+j].runs
+                j = j + 1
+            for t in description_lines:
+                t.text = t.text.strip()
+                t.text = t.text.strip('\n')
+                if t.text != '':    
+                    description += t.text + '\n'
+            if description != "":
+                event.description = description
         
         event_list.append(event)
 
