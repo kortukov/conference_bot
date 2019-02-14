@@ -11,7 +11,7 @@ class BaseEvent(object):
         self.title_ru = title_ru
         self.title_en = title_en
     def __str__(self):
-        return "Start: " + str(datetime.fromtimestamp(self.ts_begin)) + "    End: " + str(datetime.fromtimestamp(self.ts_end)) + "\n" + str(self.place_id) + " " + str(self.event_type) + " " + str(self.title_ru) + " " + str(self.title_en)
+        return "Start: " + str(datetime.fromtimestamp(self.ts_begin).time())[:-3] + "    End: " + str(datetime.fromtimestamp(self.ts_end).time())[:-3] + "\n" + str(self.place_id) + " " + str(self.title_ru) + " " + str(self.title_en)
 
     def getEventType(self):
         return self.event_type
@@ -33,6 +33,9 @@ class Other(SimpleEvent):
         super().__init__(ts_begin, ts_end, place_id, "Other", title_ru, title_en)
 
     def __str__(self):
+        return super().__str__()
+
+    def full_str(self):
         result = ""
         result = super().__str__() + '\n' 
         if self.description != None:
@@ -47,11 +50,15 @@ class FullEvent(BaseEvent):
         super().__init__(ts_begin, ts_end, place_id, event_type, title_ru, title_en)
     
     def __str__(self):
+        return super().__str__()
+
+    def full_str(self):
         result = ""
         result = super().__str__() + '\n' 
         for element in self.sublist:
             result = result + "Title:\n\t" + element[0] + '\n'
-            result = result + "Authors:\n\t" + element[1] + '\n'
+            if element[1] != "":
+                result = result + "Authors:\n\t" + element[1] + '\n'
             if element[2] != "":
                 result = result + "Speaker:\n\t" + element[2] + '\n'
         return result
@@ -68,7 +75,7 @@ class Research(FullEvent):
 
 class Young(FullEvent):
     def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en):
-         super().__init__(ts_begin, ts_end, place_id, "Young researchers", title_ru, title_en)
+         super().__init__(ts_begin, ts_end, place_id, "Young", title_ru, title_en)
 
 class OtherFull(FullEvent):
     def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en):
