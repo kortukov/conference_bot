@@ -46,6 +46,19 @@ class BaseEvent(object):
         self.title_en = title_en
     def __str__(self):
         return "Start: " + str(datetime.fromtimestamp(self.ts_begin).time())[:-3] + "    End: " + str(datetime.fromtimestamp(self.ts_end).time())[:-3] + "\n" + get_place(self.place_id) + "\n" + str(self.title_ru) + " " + str(self.title_en)
+    
+    def str_ru(self):
+        return "Начало: " + str(datetime.fromtimestamp(self.ts_begin).time())[:-3] + \
+        "    Конец: " + str(datetime.fromtimestamp(self.ts_end).time())[:-3] + \
+        "\nЗал: " + get_place(self.place_id) + "\n" + \
+        '<b>' + str(self.title_ru) + '</b>'
+
+    def str_en(self):
+        return "Start: " + str(datetime.fromtimestamp(self.ts_begin).time())[:-3] + \
+        "    End: " + str(datetime.fromtimestamp(self.ts_end).time())[:-3] + \
+        "\nHall: " + get_place(self.place_id, eng = True) + "\n" + \
+        '<b>' + str(self.title_en) + '</b>'
+
 
     def getEventType(self):
         return self.event_type
