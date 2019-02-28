@@ -91,9 +91,10 @@ class Other(SimpleEvent):
 
 #Events with description: Plenary session, research session, Young researchers, other with description
 class FullEvent(BaseEvent):
-    
-    def __init__(self, ts_begin, ts_end, place_id, event_type, title_ru, title_en):
+    #full events have numbers for commands that print full description
+    def __init__(self, ts_begin, ts_end, place_id, event_type, title_ru, title_en, number):
         self.sublist = []
+        self.number = number
         super().__init__(ts_begin, ts_end, place_id, event_type, title_ru, title_en)
     
     def __str__(self):
@@ -111,22 +112,22 @@ class FullEvent(BaseEvent):
         return result
 
 class Plenary(FullEvent):
-    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en):
-         super().__init__(ts_begin, ts_end, place_id, "Plenary", title_ru, title_en)
+    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en, number):
+         super().__init__(ts_begin, ts_end, place_id, "Plenary", title_ru, title_en, number)
 
 class Research(FullEvent):
 
-    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en):
-         super().__init__(ts_begin, ts_end, place_id, "Research", title_ru, title_en)
+    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en, number):
+         super().__init__(ts_begin, ts_end, place_id, "Research", title_ru, title_en, number)
         
 
 class Young(FullEvent):
-    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en):
-         super().__init__(ts_begin, ts_end, place_id, "Young", title_ru, title_en)
+    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en, number):
+         super().__init__(ts_begin, ts_end, place_id, "Young", title_ru, title_en, number)
 
 class OtherFull(FullEvent):
-    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en):
-         super().__init__(ts_begin,ts_end, place_id, "Other full events", title_ru, title_en)        
+    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en, number):
+         super().__init__(ts_begin,ts_end, place_id, "Other full events", title_ru, title_en, number)        
          
 
 

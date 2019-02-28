@@ -18,7 +18,8 @@ localisation = {
 	'YOUNG' : 'Конференция молодых учёных',
 	'WORKSHOPS' : 'Семинары, воркошопы, мастер-классы',
 	'FOOD' : 'Еда',
-	'GOODBYE' : 'До свидания!'
+	'GOODBYE' : 'До свидания!',
+	'DETAILS': 'Подробнее: '
 }
 lang = 'rus'
 
@@ -47,6 +48,7 @@ def change_language():
 		localisation['WORKSHOPS'] = 'Workshops, seminars, master-classes'
 		localisation['FOOD'] = 'Food'
 		localisation['GOODBYE'] = 'Goodbye!'
+		localisation['DETAILS'] = 'Details: '
 		
 	else:
 		lang = 'rus'
@@ -70,5 +72,6 @@ def change_language():
 		localisation['WORKSHOPS'] = 'Семинары, воркошопы, мастер-классы'
 		localisation['FOOD'] = 'Еда'
 		localisation['GOODBYE'] = 'До свидания!'
+		localisation['DETAILS'] = 'Подробнее '
 		
 

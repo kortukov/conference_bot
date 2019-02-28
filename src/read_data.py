@@ -68,6 +68,7 @@ if __name__ == '__main__':
     doc_length = len(document.paragraphs)
 
     event_list = []
+    full_event_counter = 0
     for i in range(1,doc_length):
         text = document.paragraphs[i].text
 
@@ -104,13 +105,16 @@ if __name__ == '__main__':
             event = Food(ts_begin, ts_end, current_place, title_ru, title_en)
 
         elif "Plenary" in title_en:
-            event = Plenary(ts_begin, ts_end, current_place, title_ru, title_en)
+            event = Plenary(ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter)
+            full_event_counter += 1
 
         elif "Research" in title_en:
-            event = Research(ts_begin, ts_end, current_place, title_ru, title_en)
+            event = Research(ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter)
+            full_event_counter += 1
 
         elif "Student" in title_en:
-            event = Young(ts_begin, ts_end, current_place, title_ru, title_en)  
+            event = Young(ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter)
+            full_event_counter += 1  
 
         elif "Awards" in title_en:
             event = Other(ts_begin, ts_end, current_place, title_ru, title_en)
@@ -125,7 +129,8 @@ if __name__ == '__main__':
                         list_needed = 1
                 j = j + 1
             if list_needed:
-                event = OtherFull(ts_begin, ts_end, current_place, title_ru, title_en)
+                event = OtherFull(ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter)
+                full_event_counter += 1
             else:
                 event = Other(ts_begin, ts_end, current_place, title_ru, title_en)
 
