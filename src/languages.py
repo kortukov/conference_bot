@@ -31,7 +31,7 @@ def change_language():
 		localisation['HELLO'] = 'I am a helper bot.\nWhat can I do for you?\n\n'
 		localisation['SENDINGPDF'] = 'Sending program as a PDF-file'
 		localisation['WHICHDAY'] = 'Which date ?\n\n'
-		localisation['CHOOSESECTION'] = 'Chosse section: \n\n'
+		localisation['CHOOSESECTION'] = 'Choose section: \n\n'
 		
 		localisation['SHOWPROGRAM'] = 'Show the conference program'
 		localisation['SENDPROGRAM'] = 'Send the program as PDF'
