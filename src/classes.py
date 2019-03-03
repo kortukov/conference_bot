@@ -119,6 +119,19 @@ class FullEvent(BaseEvent):
                 result = result + "Докладчик:\n\t" + element[2] + '\n\n'
         return result
 
+
+    def one_talk_str_ru(self, number):
+        result = ""
+        result = super().str_ru() + '\n\n' 
+        if number >= len(self.sublist): return ''
+        element = self.sublist[number]
+        result = result + "<b>" + element[0] + '</b>\n'
+        if element[1] != "":
+            result = result + "Авторы:\n\t" + element[1] + '\n'
+        if element[2] != "":
+            result = result + "Докладчик:\n\t" + element[2] + '\n\n'
+        return result
+
     def full_str_en(self):
         result = ""
         result = super().str_en() + '\n\n' 
@@ -130,6 +143,17 @@ class FullEvent(BaseEvent):
                 result = result + "Speaker:\n\t" + element[2] + '\n\n'
         return result
 
+    def one_talk_str_en(self):
+        result = ""
+        result = super().str_en() + '\n\n' 
+        if number >= len(self.sublist): return ''
+        element = self.sublist[number]
+        result = result + "<b>" + element[0] + '</b>\n'
+        if element[1] != "":
+            result = result + "Authors:\n\t" + element[1] + '\n'
+        if element[2] != "":
+            result = result + "Speaker:\n\t" + element[2] + '\n\n'
+        return result
 
 
 class Plenary(FullEvent):
