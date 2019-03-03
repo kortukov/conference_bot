@@ -117,7 +117,8 @@ if __name__ == '__main__':
             full_event_counter += 1  
 
         elif "Awards" in title_en:
-            event = Other(ts_begin, ts_end, current_place, title_ru, title_en)
+            event = Other(ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter)
+            full_event_counter += 1
         
         else:
             #now checking if list of talks is needed
@@ -132,7 +133,8 @@ if __name__ == '__main__':
                 event = OtherFull(ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter)
                 full_event_counter += 1
             else:
-                event = Other(ts_begin, ts_end, current_place, title_ru, title_en)
+                event = Other(ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter)
+                full_event_counter += 1
 
         if isinstance(event, FullEvent) or isinstance(event, Other):
             #filling the list of talks

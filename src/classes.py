@@ -75,16 +75,24 @@ class Food(SimpleEvent):
          super().__init__(ts_begin, ts_end, place_id, "Food", title_ru, title_en)
 
 class Other(SimpleEvent):
-    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en):
+    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en, number):
         self. description = None
+        self.number = number
         super().__init__(ts_begin, ts_end, place_id, "Other", title_ru, title_en)
 
     def __str__(self):
         return super().__str__()
 
-    def full_str(self):
+    def full_str_ru(self):
         result = ""
-        result = super().__str__() + '\n' 
+        result = super().str_ru() + '\n\n' 
+        if self.description != None:
+            result += "Описание:\n\t" + self.description
+        return result
+
+    def full_str_en(self):
+        result = ""
+        result = super().str_en() + '\n\n' 
         if self.description != None:
             result += "Description:\n\t" + self.description
         return result
@@ -100,16 +108,29 @@ class FullEvent(BaseEvent):
     def __str__(self):
         return super().__str__()
 
-    def full_str(self):
+    def full_str_ru(self):
         result = ""
-        result = super().__str__() + '\n' 
+        result = super().str_ru() + '\n\n' 
         for element in self.sublist:
-            result = result + "Title:\n\t" + element[0] + '\n'
+            result = result + "<b>" + element[0] + '</b>\n'
+            if element[1] != "":
+                result = result + "Авторы:\n\t" + element[1] + '\n'
+            if element[2] != "":
+                result = result + "Докладчик:\n\t" + element[2] + '\n\n'
+        return result
+
+    def full_str_en(self):
+        result = ""
+        result = super().str_en() + '\n\n' 
+        for element in self.sublist:
+            result = result + "<b>" + element[0] + '</b>\n'
             if element[1] != "":
                 result = result + "Authors:\n\t" + element[1] + '\n'
             if element[2] != "":
-                result = result + "Speaker:\n\t" + element[2] + '\n'
+                result = result + "Speaker:\n\t" + element[2] + '\n\n'
         return result
+
+
 
 class Plenary(FullEvent):
     def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en, number):
