@@ -3,6 +3,7 @@ localisation = {
 	'HELLO' : 'Я бот-помощник.\nЧто я могу для вас сделать ?\n\n',
 	'WHATSEARCH' : 'Пожалуйста, введите строку для поиска:',
 	'NOTFOUND' : 'Простите, по вашему запросу ничего не найдено',
+	'MORE' : 'Ещё результаты',
 	'SENDINGPDF' : 'Высылаю PDF-файл с программой конференции',
 	'WHICHDAY' : 'Какой день вас интересует ?\n\n',
 	'CHOOSESECTION' : 'Выберите секцию: \n\n',
@@ -35,6 +36,7 @@ def change_language():
 		localisation['HELLO'] = 'I am a helper bot.\nWhat can I do for you?\n\n'
 		localisation['WHATSEARCH'] = 'Please, enter what do you want to search for:'
 		localisation['NOTFOUND'] = 'Sorry, no results found for your request'
+		localisation['MORE'] = 'More results'
 		localisation['SENDINGPDF'] = 'Sending program as a PDF-file'
 		localisation['WHICHDAY'] = 'Which date ?\n\n'
 		localisation['CHOOSESECTION'] = 'Choose section: \n\n'
@@ -62,6 +64,7 @@ def change_language():
 		localisation['HELLO'] = 'Я бот-помощник.\nЧто я могу для вас сделать ?\n\n'
 		localisation['WHATSEARCH'] = 'Пожалуйста, введите строку для поиска:'
 		localisation['NOTFOUND'] = 'Простите, по вашему запросу ничего не найдено'
+		localisation['MORE'] = 'Ещё результаты'
 		localisation['SENDINGPDF'] = 'Высылаю PDF-файл с программой конференции'
 		localisation['WHICHDAY'] = 'Какой день вас интересует ?\n\n'
 		localisation['CHOOSESECTION'] =  'Выберите секцию: \n\n'

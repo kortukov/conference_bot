@@ -59,6 +59,8 @@ class BaseEvent(object):
         "\nHall: " + get_place(self.place_id, eng = True) + "\n" + \
         '<b>' + str(self.title_en) + '</b>'
 
+    def get_date(self):
+        return int(datetime.fromtimestamp(self.ts_begin).day)
 
     def getEventType(self):
         return self.event_type
