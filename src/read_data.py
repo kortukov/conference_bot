@@ -192,14 +192,18 @@ if __name__ == '__main__':
 
     if mode == 'print':
         for event in event_list:
-            print(event)
+            print(event.event_type)
+            if isinstance(event, FullEvent):
+                print(event.full_str_ru())
+            else:
+                print(event)
             print("================")
     elif mode == 'pickle':
         with open('../event_list.pickle', 'wb') as f:
             pickle.dump(event_list, f, pickle.HIGHEST_PROTOCOL)  
     elif mode == 'json':
         
-        with open('../event_list.json', 'w') as f:
+        with open('../event_list.json', 'w') as f:  
             for event in event_list:
                 f.write(jsonpickle.encode(event))
                 f.write('\n')
