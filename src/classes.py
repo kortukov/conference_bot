@@ -47,17 +47,19 @@ class BaseEvent(object):
     def __str__(self):
         return "Start: " + str(datetime.fromtimestamp(self.ts_begin).time())[:-3] + "    End: " + str(datetime.fromtimestamp(self.ts_end).time())[:-3] + "\n" + get_place(self.place_id) + "\n" + str(self.title_ru) + " " + str(self.title_en)
     
+    
+
     def str_ru(self):
-        return "Начало: " + str(datetime.fromtimestamp(self.ts_begin).time())[:-3] + \
-        "    Конец: " + str(datetime.fromtimestamp(self.ts_end).time())[:-3] + \
-        "\nЗал: " + get_place(self.place_id) + "\n" + \
-        '<b>' + str(self.title_ru) + '</b>'
+        return  "Время: " + str(datetime.fromtimestamp(self.ts_begin).time())[:-3] + \
+                " - " + str(datetime.fromtimestamp(self.ts_end).time())[:-3] + \
+                "\nЗал: " + get_place(self.place_id) + "\n" + \
+                '<b>' + str(self.title_ru) + '</b>'
 
     def str_en(self):
-        return "Start: " + str(datetime.fromtimestamp(self.ts_begin).time())[:-3] + \
-        "    End: " + str(datetime.fromtimestamp(self.ts_end).time())[:-3] + \
-        "\nHall: " + get_place(self.place_id, eng = True) + "\n" + \
-        '<b>' + str(self.title_en) + '</b>'
+        return  "Time: " + str(datetime.fromtimestamp(self.ts_begin).time())[:-3] + \
+                " - " + str(datetime.fromtimestamp(self.ts_end).time())[:-3] + \
+                "\nHall: " + get_place(self.place_id) + "\n" + \
+                '<b>' + str(self.title_en) + '</b>'
 
     def get_date(self):
         return int(datetime.fromtimestamp(self.ts_begin).day)

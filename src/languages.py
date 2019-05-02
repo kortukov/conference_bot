@@ -7,8 +7,12 @@ localisation = {
 	'SENDINGPDF' : 'Высылаю PDF-файл с программой конференции',
 	'WHICHDAY' : 'Какой день вас интересует ?\n\n',
 	'CHOOSESECTION' : 'Выберите секцию: \n\n',
+	'CHOOSETIME' : 'Выберите время: \n\n',
+	'WRONG' : 'Я вас не понимаю.',
+	'GOODBYE' : 'До свидания!',
 	#BUTTONS
-	'SHOWPROGRAM' : 'Показать программу по дням',
+	'SHOWPROGRAM' : 'Показать программу по секциям',
+	'SHOWPROGRAMTIME' : 'Показать программу по времени',
 	'SENDPROGRAM' : 'Прислать программу в PDF',
 	'SEARCHPROGRAM' : 'Найти доклад или автора',
 	'LANGUAGE' : 'English',
@@ -22,7 +26,6 @@ localisation = {
 	'YOUNG' : 'Конференция молодых учёных',
 	'WORKSHOPS' : 'Семинары, воркошопы, мастер-классы',
 	'FOOD' : 'Еда',
-	'GOODBYE' : 'До свидания!',
 	'DETAILS': 'Подробнее: '
 }
 lang = 'rus'
@@ -40,8 +43,12 @@ def change_language():
 		localisation['SENDINGPDF'] = 'Sending program as a PDF-file'
 		localisation['WHICHDAY'] = 'Which date ?\n\n'
 		localisation['CHOOSESECTION'] = 'Choose section: \n\n'
+		localisation['CHOOSETIME'] = 'Choose time: \n\n'
+		localisation['GOODBYE'] = 'Goodbye!'
+		localisation['WRONG'] = "I don't understand you"
 		
 		localisation['SHOWPROGRAM'] = 'Show the conference program'
+		localisation['SHOWPROGRAMTIME'] =  'Show program by time'
 		localisation['SENDPROGRAM'] = 'Send the program as PDF'
 		localisation['SEARCHPROGRAM'] = 'Find presentation or speaker'
 		localisation['LANGUAGE'] = 'Русский'
@@ -55,7 +62,6 @@ def change_language():
 		localisation['YOUNG'] = 'PhD and student showcase'
 		localisation['WORKSHOPS'] = 'Workshops, seminars, master-classes'
 		localisation['FOOD'] = 'Food'
-		localisation['GOODBYE'] = 'Goodbye!'
 		localisation['DETAILS'] = 'Details: '
 		
 	else:
@@ -68,8 +74,12 @@ def change_language():
 		localisation['SENDINGPDF'] = 'Высылаю PDF-файл с программой конференции'
 		localisation['WHICHDAY'] = 'Какой день вас интересует ?\n\n'
 		localisation['CHOOSESECTION'] =  'Выберите секцию: \n\n'
+		localisation['CHOOSETIME'] = 'Выберите время: \n\n'
+		localisation['WRONG'] = 'Я вас не понимаю.'
+		localisation['GOODBYE'] = 'До свидания!'
 		
-		localisation['SHOWPROGRAM'] = 'Показать программу по дням'
+		localisation['SHOWPROGRAM'] = 'Показать программу по секциям'
+		localisation['SHOWPROGRAMTIME'] =  'Показать программу по времени'
 		localisation['SENDPROGRAM'] = 'Прислать программу в PDF'
 		localisation['SEARCHPROGRAM'] = 'Найти доклад или автора'
 		localisation['LANGUAGE'] = 'English'
@@ -83,7 +93,6 @@ def change_language():
 		localisation['YOUNG'] = 'Конференция молодых учёных'
 		localisation['WORKSHOPS'] = 'Семинары, воркошопы, мастер-классы'
 		localisation['FOOD'] = 'Еда'
-		localisation['GOODBYE'] = 'До свидания!'
 		localisation['DETAILS'] = 'Подробнее '
 		
 
