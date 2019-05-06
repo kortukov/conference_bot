@@ -1,4 +1,4 @@
-localisation = {
+localisation_ru = {
 	#MESSAGES
 	'HELLO' : 'Я бот-помощник.\nЧто я могу для вас сделать ?\n\n',
 	'WHATSEARCH' : 'Пожалуйста, введите строку для поиска:',
@@ -26,73 +26,35 @@ localisation = {
 	'YOUNG' : 'Конференция молодых учёных',
 	'WORKSHOPS' : 'Семинары, воркошопы, мастер-классы',
 	'FOOD' : 'Еда',
-	'DETAILS': 'Подробнее: '
+	'DETAILS' : 'Подробнее: '
 }
-lang = 'rus'
-
-def change_language():
-	global localisation
-	global lang 
-	if lang == 'rus':
-		lang = 'eng'
-		
-		localisation['HELLO'] = 'I am a helper bot.\nWhat can I do for you?\n\n'
-		localisation['WHATSEARCH'] = 'Please, enter what do you want to search for:'
-		localisation['NOTFOUND'] = 'Sorry, no results found for your request'
-		localisation['MORE'] = 'More results'
-		localisation['SENDINGPDF'] = 'Sending program as a PDF-file'
-		localisation['WHICHDAY'] = 'Which date ?\n\n'
-		localisation['CHOOSESECTION'] = 'Choose section: \n\n'
-		localisation['CHOOSETIME'] = 'Choose time: \n\n'
-		localisation['GOODBYE'] = 'Goodbye!'
-		localisation['WRONG'] = "I don't understand you"
-		
-		localisation['SHOWPROGRAM'] = 'Show the conference program'
-		localisation['SHOWPROGRAMTIME'] =  'Show program by time'
-		localisation['SENDPROGRAM'] = 'Send the program as PDF'
-		localisation['SEARCHPROGRAM'] = 'Find presentation or speaker'
-		localisation['LANGUAGE'] = 'Русский'
-		localisation['TOBEGINNING'] = 'To beginning'
-		localisation['BACK'] = 'Back'
-		localisation['24'] = '24 September'
-		localisation['25'] = '25 September'
-		
-		localisation['PLENARY'] = 'Plenary session'
-		localisation['RESEARCH'] = 'Research Papers Session'
-		localisation['YOUNG'] = 'PhD and student showcase'
-		localisation['WORKSHOPS'] = 'Workshops, seminars, master-classes'
-		localisation['FOOD'] = 'Food'
-		localisation['DETAILS'] = 'Details: '
-		
-	else:
-		lang = 'rus'
-		
-		localisation['HELLO'] = 'Я бот-помощник.\nЧто я могу для вас сделать ?\n\n'
-		localisation['WHATSEARCH'] = 'Пожалуйста, введите строку для поиска:'
-		localisation['NOTFOUND'] = 'Простите, по вашему запросу ничего не найдено'
-		localisation['MORE'] = 'Ещё результаты'
-		localisation['SENDINGPDF'] = 'Высылаю PDF-файл с программой конференции'
-		localisation['WHICHDAY'] = 'Какой день вас интересует ?\n\n'
-		localisation['CHOOSESECTION'] =  'Выберите секцию: \n\n'
-		localisation['CHOOSETIME'] = 'Выберите время: \n\n'
-		localisation['WRONG'] = 'Я вас не понимаю.'
-		localisation['GOODBYE'] = 'До свидания!'
-		
-		localisation['SHOWPROGRAM'] = 'Показать программу по секциям'
-		localisation['SHOWPROGRAMTIME'] =  'Показать программу по времени'
-		localisation['SENDPROGRAM'] = 'Прислать программу в PDF'
-		localisation['SEARCHPROGRAM'] = 'Найти доклад или автора'
-		localisation['LANGUAGE'] = 'English'
-		localisation['TOBEGINNING'] = 'В начало'
-		localisation['BACK'] = 'Назад'
-		localisation['24'] = '24 сентября'
-		localisation['25'] = '25 сентября'
-		
-		localisation['PLENARY'] = 'Пленарная секция'
-		localisation['RESEARCH'] = 'Исследовательская секция'
-		localisation['YOUNG'] = 'Конференция молодых учёных'
-		localisation['WORKSHOPS'] = 'Семинары, воркошопы, мастер-классы'
-		localisation['FOOD'] = 'Еда'
-		localisation['DETAILS'] = 'Подробнее '
-		
-
+localisation_en = {
+	#MESSAGES
+	'HELLO' : 'I am a helper bot.\nWhat can I do for you?\n\n',
+	'WHATSEARCH': 'Please, enter what do you want to search for:',
+	'NOTFOUND': 'Sorry, no results found for your request',
+	'MORE' : 'More results',
+	'SENDINGPDF' : 'Sending program as a PDF-file',
+	'WHICHDAY' : 'Which date ?\n\n',
+	'CHOOSESECTION': 'Choose section: \n\n',
+	'CHOOSETIME': 'Choose time: \n\n',
+	'GOODBYE': 'Goodbye!',
+	'WRONG': "I don't understand you",
+	#BUTTONS
+	'SHOWPROGRAM': 'Show the conference program',
+	'SHOWPROGRAMTIME':  'Show program by time',
+	'SENDPROGRAM': 'Send the program as PDF',
+	'SEARCHPROGRAM':  'Find presentation or speaker',
+	'LANGUAGE':  'Русский',
+	'TOBEGINNING': 'To beginning',
+	'BACK': 'Back',
+	'24': '24 September',
+	'25': '25 September',
+	#SECTIONS
+	'PLENARY': 'Plenary session',
+	'RESEARCH': 'Research Papers Session',
+	'YOUNG': 'PhD and student showcase',
+	'WORKSHOPS': 'Workshops, seminars, master-classes',
+	'FOOD': 'Food',
+	'DETAILS': 'Details: '
+}
