@@ -120,7 +120,9 @@ class FullEvent(BaseEvent):
             if element[1] != "":
                 result = result + "Авторы:\n\t" + element[1] + '\n'
             if element[2] != "":
-                result = result + "Докладчик:\n\t" + element[2] + '\n\n'
+                result = result + "Докладчик:\n\t" + element[2] + '\n'
+            if element[3] != "":
+                result = result + 'Отметить доклад: /mark' + str(element[3]) + '\n\n'
         return result
 
 

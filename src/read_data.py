@@ -69,6 +69,7 @@ if __name__ == '__main__':
 
     event_list = []
     full_event_counter = 0
+    talks_counter = 0
     for i in range(1,doc_length):
         text = document.paragraphs[i].text
 
@@ -168,7 +169,8 @@ if __name__ == '__main__':
                         current_authors = current_authors +  talks_list[j+k].text.strip('\n')
 
                         k = k + 1
-                    event.sublist.append((current_talk, current_authors, current_speaker))
+                    event.sublist.append((current_talk, current_authors, current_speaker, talks_counter))
+                    talks_counter += 1
 
                 j = j + 1
 
