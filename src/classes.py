@@ -105,7 +105,7 @@ class Other(SimpleEvent):
 class FullEvent(BaseEvent):
     #full events have numbers for commands that print full description
     def __init__(self, ts_begin, ts_end, place_id, event_type, title_ru, title_en, number):
-        self.sublist = []
+        self.sublist = [] #list of list [name: str, authors: str, lecturer: str, number: int, marked: boolean]
         self.number = number
         super().__init__(ts_begin, ts_end, place_id, event_type, title_ru, title_en)
     
@@ -121,8 +121,12 @@ class FullEvent(BaseEvent):
                 result = result + "Авторы:\n\t" + element[1] + '\n'
             if element[2] != "":
                 result = result + "Докладчик:\n\t" + element[2] + '\n'
-            if element[3] != "":
-                result = result + 'Отметить доклад: /mark' + str(element[3]) + '\n\n'
+            if element[3]:
+                if element[4] == False: #marked  
+                    result = result + 'Отметить доклад: /mark' + str(element[3]) + '\n'
+                else:
+                    result = result + 'Убрать отметку: /unmark' + str(element[3]) + '\n'
+
         return result
 
 
@@ -136,6 +140,11 @@ class FullEvent(BaseEvent):
             result = result + "Авторы:\n\t" + element[1] + '\n'
         if element[2] != "":
             result = result + "Докладчик:\n\t" + element[2] + '\n\n'
+        if element[3]:
+                if element[4] == False: #marked  
+                    result = result + 'Отметить доклад: /mark' + str(element[3]) + '\n'
+                else:
+                    result = result + 'Убрать отметку: /unmark' + str(element[3]) + '\n'
         return result
 
     def full_str_en(self):
@@ -147,9 +156,14 @@ class FullEvent(BaseEvent):
                 result = result + "Authors:\n\t" + element[1] + '\n'
             if element[2] != "":
                 result = result + "Speaker:\n\t" + element[2] + '\n\n'
+            if element[3]:
+                if element[4] == False: #marked  
+                    result = result + 'Mark talk: /mark' + str(element[3]) + '\n'
+                else:
+                    result = result + 'Remove mark: /unmark' + str(element[3]) + '\n'
         return result
 
-    def one_talk_str_en(self):
+    def one_talk_str_en(self, number):
         result = ""
         result = super().str_en() + '\n\n' 
         if number >= len(self.sublist): return ''
@@ -159,6 +173,11 @@ class FullEvent(BaseEvent):
             result = result + "Authors:\n\t" + element[1] + '\n'
         if element[2] != "":
             result = result + "Speaker:\n\t" + element[2] + '\n\n'
+        if element[3]:
+                if element[4] == False: #marked  
+                    result = result + 'Mark talk: /mark' + str(element[3]) + '\n'
+                else:
+                    result = result + 'Remove mark: /unmark' + str(element[3]) + '\n'
         return result
 
 

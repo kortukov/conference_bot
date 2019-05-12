@@ -169,7 +169,7 @@ if __name__ == '__main__':
                         current_authors = current_authors +  talks_list[j+k].text.strip('\n')
 
                         k = k + 1
-                    event.sublist.append((current_talk, current_authors, current_speaker, talks_counter))
+                    event.sublist.append([current_talk, current_authors, current_speaker, talks_counter, False])
                     talks_counter += 1
 
                 j = j + 1

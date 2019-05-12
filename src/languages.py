@@ -23,6 +23,7 @@ localisation_ru = {
 	'24' : '24 сентября',
 	'25' : '25 сентября',
 	'FEEDBACK' : 'Оставить фидбек',
+	'MARKED' : 'Отмеченные доклады',
 	#SECTIONS
 	'PLENARY' : 'Пленарная секция',
 	'RESEARCH' : 'Исследовательская секция',
@@ -56,6 +57,7 @@ localisation_en = {
 	'24': '24 September',
 	'25': '25 September',
 	'FEEDBACK' : 'Leave feedback',
+	'MARKED' : 'Marked talks',
 	#SECTIONS
 	'PLENARY': 'Plenary session',
 	'RESEARCH': 'Research Papers Session',
