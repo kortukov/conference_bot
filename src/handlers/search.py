@@ -1,11 +1,11 @@
 import logging
 
 import telegram
-from telegram import ReplyKeyboardMarkup,  Update
+from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
 from classes import FullEvent
-
+import keyboards
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +23,7 @@ def search_program(update: Update, context: CallbackContext):
         "User %s %s username:%s: search_program.", user.first_name, user.last_name, user.username
     )
 
-    reply_keyboard = [[context.user_data['localisation']['TOBEGINNING']]]
+    reply_keyboard = keyboards.to_begin_keyboard(context)
     update.message.reply_text(
         context.user_data['localisation']['WHATSEARCH'],
         reply_markup=ReplyKeyboardMarkup(
@@ -45,7 +45,7 @@ def perform_search(update: Update, context: CallbackContext):
     )
 
     context.user_data['reply_messages'] = []
-    reply_keyboard = [[context.user_data['localisation']['TOBEGINNING']]]
+    reply_keyboard = keyboards.to_begin_keyboard(context)
     reply_messages = []
     for event in dk.event_list:
         if isinstance(event, FullEvent):
@@ -119,10 +119,7 @@ def perform_search(update: Update, context: CallbackContext):
 
     if len(reply_messages) > 5:
         context.user_data['reply_messages'] = reply_messages[5:]
-        reply_keyboard = [
-            [context.user_data['localisation']['MORE']],
-            [context.user_data['localisation']['TOBEGINNING']],
-        ]
+        reply_keyboard = keyboards.more_to_begin_keyboard(context)
         reply_messages = reply_messages[:5]
 
     if len(reply_messages) == 0:
@@ -146,16 +143,13 @@ def perform_search(update: Update, context: CallbackContext):
 
 def search_more(update: Update, context: CallbackContext):
     reply_messages = context.user_data.get('reply_messages', None)
-    reply_keyboard = [[context.user_data['localisation']['TOBEGINNING']]]
+    reply_keyboard = keyboards.to_begin_keyboard(context)
     if not reply_messages:
         reply_messages = [context.user_data['localisation']['NOTFOUND']]
     else:
         if len(reply_messages) > 5:
             context.user_data['reply_messages'] = reply_messages[5:]
-            reply_keyboard = [
-                [context.user_data['localisation']['MORE']],
-                [context.user_data['localisation']['TOBEGINNING']],
-            ]
+            reply_keyboard = keyboards.more_to_begin_keyboard(context)
             reply_messages = reply_messages[:5]
         else:
             context.user_data['reply_messages'] = []

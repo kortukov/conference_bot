@@ -6,7 +6,7 @@ from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
 from classes import FullEvent, Other
-
+import keyboards
 
 logger = logging.getLogger(__name__)
 
@@ -24,11 +24,7 @@ def show_program(update: Update, context: CallbackContext):
         "User %s %s username:%s: show_program", user.first_name, user.last_name, user.username
     )
 
-    reply_keyboard = [
-        [context.user_data['localisation']['24']],
-        [context.user_data['localisation']['25']],
-        [context.user_data['localisation']['TOBEGINNING']],
-    ]
+    reply_keyboard = keyboards.days_keyboard(context)
     context.user_data['by_time'] = False
     update.message.reply_text(
         context.user_data['localisation']['WHICHDAY'],
@@ -41,18 +37,7 @@ def show_program(update: Update, context: CallbackContext):
 
 
 def back_to_sections(update: Update, context: CallbackContext):
-    # here goes the code that saves the day
-    day = context.user_data['day']
-    reply_keyboard = [
-        [context.user_data['localisation']['PLENARY']],
-        [context.user_data['localisation']['RESEARCH']],
-        [context.user_data['localisation']['WORKSHOPS']],
-        [context.user_data['localisation']['FOOD']],
-        [context.user_data['localisation']['BACK']],
-        [context.user_data['localisation']['TOBEGINNING']],
-    ]
-    if day == 24:
-        reply_keyboard.insert(2, [context.user_data['localisation']['YOUNG']])
+    reply_keyboard = keyboards.sections_keyboard(context)
 
     update.message.reply_text(
         context.user_data['localisation']['CHOOSESECTION'],
@@ -92,10 +77,7 @@ def send_data(update: Update, context: CallbackContext):
     elif message == context.user_data['localisation']['FOOD']:
         types = ['Food']
 
-    reply_keyboard = [
-        [context.user_data['localisation']['BACK']],
-        [context.user_data['localisation']['TOBEGINNING']],
-    ]
+    reply_keyboard = keyboards.back_to_begin_keyboard(context)
 
     events = (
         event
@@ -128,10 +110,7 @@ def send_data(update: Update, context: CallbackContext):
 
 def back_to_message(update: Update, context: CallbackContext):
     message_to_send = context.user_data['message']
-    reply_keyboard = [
-        [context.user_data['localisation']['BACK']],
-        [context.user_data['localisation']['TOBEGINNING']],
-    ]
+    reply_keyboard = keyboards.back_to_begin_keyboard(context)
     update.message.reply_text(
         message_to_send,
         parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
@@ -174,12 +153,9 @@ def send_description(update: Update, context: CallbackContext):
         reply_message += (event.full_str_en()) + '\n'
 
     if context.user_data['type'] == 'sections' or context.user_data['type'] == 'time':
-        reply_keyboard = [
-            [context.user_data['localisation']['BACK']],
-            [context.user_data['localisation']['TOBEGINNING']],
-        ]
+        reply_keyboard = keyboards.back_to_begin_keyboard(context)
     elif context.user_data['type'] == 'search':
-        reply_keyboard = [[context.user_data['localisation']['TOBEGINNING']]]
+        reply_keyboard = keyboards.to_begin_keyboard(context)
 
     update.message.reply_text(
         reply_message,

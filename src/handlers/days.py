@@ -4,7 +4,7 @@ from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
 import helpers
-
+import keyboards
 
 logger = logging.getLogger(__name__)
 
@@ -29,24 +29,9 @@ def choose_days(update: Update, context: CallbackContext):
     )
 
     context.user_data['day'] = day
-    times_list = helpers.create_times_without_food_list(day)
 
     if context.user_data['by_time']:
-        reply_keyboard = []
-        if len(times_list) % 2 == 0:
-            for i in range(0, len(times_list), 2):
-                reply_keyboard.extend([[times_list[i], times_list[i + 1]]])
-        else:
-            for i in range(0, len(times_list) - 1, 2):
-                reply_keyboard.extend([[times_list[i], times_list[i + 1]]])
-            reply_keyboard.extend([[times_list[-1]]])
-
-        reply_keyboard.extend(
-            [
-                [context.user_data['localisation']['BACK']],
-                [context.user_data['localisation']['TOBEGINNING']],
-            ]
-        )
+        reply_keyboard = keyboards.times_keyboard(context)
 
         update.message.reply_text(
             context.user_data['localisation']['CHOOSETIME'],
@@ -56,16 +41,7 @@ def choose_days(update: Update, context: CallbackContext):
         )
         return dk.TIME
     else:
-        reply_keyboard = [
-            [context.user_data['localisation']['PLENARY']],
-            [context.user_data['localisation']['RESEARCH']],
-            [context.user_data['localisation']['WORKSHOPS']],
-            [context.user_data['localisation']['FOOD']],
-            [context.user_data['localisation']['BACK']],
-            [context.user_data['localisation']['TOBEGINNING']],
-        ]
-        if day == 24:
-            reply_keyboard.insert(2, [context.user_data['localisation']['YOUNG']])
+        reply_keyboard = keyboards.sections_keyboard(context)
 
         update.message.reply_text(
             context.user_data['localisation']['CHOOSESECTION'],
@@ -78,11 +54,7 @@ def choose_days(update: Update, context: CallbackContext):
 
 
 def back_to_days(update: Update, context: CallbackContext):
-    reply_keyboard = [
-        [context.user_data['localisation']['24']],
-        [context.user_data['localisation']['25']],
-        [context.user_data['localisation']['TOBEGINNING']],
-    ]
+    reply_keyboard = keyboards.days_keyboard(context)
 
     update.message.reply_text(
         context.user_data['localisation']['WHICHDAY'],

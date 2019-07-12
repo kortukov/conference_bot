@@ -5,7 +5,7 @@ from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
 from classes import FullEvent, Other
-
+import keyboards
 
 logger = logging.getLogger(__name__)
 
@@ -75,10 +75,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
             reply_message += (event.full_str_ru()) + '\n'
         else:
             reply_message += (event.full_str_en()) + '\n'
-        reply_keyboard = [
-            [context.user_data['localisation']['BACK']],
-            [context.user_data['localisation']['TOBEGINNING']],
-        ]
+        reply_keyboard = keyboards.back_to_begin_keyboard(context)
 
         update.message.reply_text(
             reply_message,
@@ -99,7 +96,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
             if "mark" + str(needed_number) in reply_messages[i]:
                 reply_messages[i] = context.user_data['marked_list'][-1]
 
-        reply_keyboard = [[context.user_data['localisation']['TOBEGINNING']]]
+        reply_keyboard = keyboards.to_begin_keyboard(context)
 
         for reply_message in reply_messages:
             update.message.reply_text(
@@ -114,7 +111,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
 
     elif context.user_data['type'] == 'marked':
         marked_list = context.user_data['marked_list']
-        reply_keyboard = [[context.user_data['localisation']['TOBEGINNING']]]
+        reply_keyboard = keyboards.to_begin_keyboard(context)
         for reply_message in marked_list:
             update.message.reply_text(
                 reply_message,
@@ -136,7 +133,7 @@ def show_marked_talks(update: Update, context: CallbackContext):
 
     marked_list = context.user_data['marked_list']
 
-    reply_keyboard = [[context.user_data['localisation']['TOBEGINNING']]]
+    reply_keyboard = keyboards.to_begin_keyboard(context)
     for reply_message in marked_list:
         update.message.reply_text(
             reply_message,

@@ -7,6 +7,7 @@ from telegram.ext import CallbackContext
 
 from classes import FullEvent, Other
 import helpers
+import keyboards
 from read_data import get_timestamp
 
 
@@ -25,11 +26,7 @@ def show_program_time(update: Update, context: CallbackContext):
     logger.info(
         "User %s %s username:%s: show_program_time", user.first_name, user.last_name, user.username
     )
-    reply_keyboard = [
-        [context.user_data['localisation']['24']],
-        [context.user_data['localisation']['25']],
-        [context.user_data['localisation']['TOBEGINNING']],
-    ]
+    reply_keyboard = keyboards.days_keyboard(context)
     context.user_data['by_time'] = True
     update.message.reply_text(
         context.user_data['localisation']['WHICHDAY'],
@@ -42,23 +39,8 @@ def show_program_time(update: Update, context: CallbackContext):
 
 
 def back_to_time(update: Update, context: CallbackContext):
-    day = context.user_data['day']
-    times_list = helpers.create_times_without_food_list(day)
-    reply_keyboard = []
-    if len(times_list) % 2 == 0:
-        for i in range(0, len(times_list), 2):
-            reply_keyboard.extend([[times_list[i], times_list[i + 1]]])
-    else:
-        for i in range(0, len(times_list) - 1, 2):
-            reply_keyboard.extend([[times_list[i], times_list[i + 1]]])
-        reply_keyboard.extend([[times_list[-1]]])
+    reply_keyboard = keyboards.times_keyboard(context)
 
-    reply_keyboard.extend(
-        [
-            [context.user_data['localisation']['BACK']],
-            [context.user_data['localisation']['TOBEGINNING']],
-        ]
-    )
     update.message.reply_text(
         context.user_data['localisation']['CHOOSETIME'],
         reply_markup=ReplyKeyboardMarkup(
@@ -113,10 +95,7 @@ def choose_time(update: Update, context: CallbackContext):
 
     context.user_data['message'] = reply_message
 
-    reply_keyboard = [
-        [context.user_data['localisation']['BACK']],
-        [context.user_data['localisation']['TOBEGINNING']],
-    ]
+    reply_keyboard = keyboards.back_to_begin_keyboard(context)
 
     update.message.reply_text(
         reply_message,
@@ -131,10 +110,7 @@ def choose_time(update: Update, context: CallbackContext):
 
 def back_to_message_time(update: Update, context: CallbackContext):
     message_to_send = context.user_data['message']
-    reply_keyboard = [
-        [context.user_data['localisation']['BACK']],
-        [context.user_data['localisation']['TOBEGINNING']],
-    ]
+    reply_keyboard = keyboards.back_to_begin_keyboard(context)
     update.message.reply_text(
         message_to_send,
         parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text

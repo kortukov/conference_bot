@@ -4,6 +4,7 @@ from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
 import languages
+import keyboards
 
 
 logger = logging.getLogger(__name__)
@@ -17,7 +18,6 @@ def init_module(data_keeper):
 
 
 def beginning(update: Update, context: CallbackContext):
-    logger.critical(dk.event_list)
     user = update.message.from_user
     logger.info(
         "User %s %s username:%s started the conversation.",
@@ -33,17 +33,7 @@ def beginning(update: Update, context: CallbackContext):
     if 'marked_list' not in context.user_data:
         context.user_data['marked_list'] = []
 
-    reply_keyboard = [
-        [context.user_data['localisation']['SHOWPROGRAM']],
-        [context.user_data['localisation']['SHOWPROGRAMTIME']],
-        [context.user_data['localisation']['SEARCHPROGRAM']],
-        [context.user_data['localisation']['SENDPROGRAM']],
-        [context.user_data['localisation']['LANGUAGE']],
-        [context.user_data['localisation']['FEEDBACK']],
-    ]
-
-    if len(context.user_data['marked_list']) != 0:
-        reply_keyboard.append([context.user_data['localisation']['MARKED']])
+    reply_keyboard = keyboards.main_menu_keyboard(context)
 
     update.message.reply_text(
         context.user_data['localisation']['HELLO'],
@@ -72,17 +62,7 @@ def change_lang(update: Update, context: CallbackContext):
         context.user_data['localisation'] = languages.localisation_ru
         context.user_data['lang'] = 'ru'
 
-    reply_keyboard = [
-        [context.user_data['localisation']['SHOWPROGRAM']],
-        [context.user_data['localisation']['SHOWPROGRAMTIME']],
-        [context.user_data['localisation']['SEARCHPROGRAM']],
-        [context.user_data['localisation']['SENDPROGRAM']],
-        [context.user_data['localisation']['LANGUAGE']],
-        [context.user_data['localisation']['FEEDBACK']],
-    ]
-
-    if len(context.user_data['marked_list']) != 0:
-        reply_keyboard.append([context.user_data['localisation']['MARKED']])
+    reply_keyboard = keyboards.main_menu_keyboard(context)
 
     update.message.reply_text(
         context.user_data['localisation']['HELLO'],
@@ -99,14 +79,9 @@ def send_pdf(update: Update, context: CallbackContext):
     logger.info("User %s %s username:%s: send_pdf", user.first_name, user.last_name, user.username)
 
     context.bot.send_document(chat_id=update.message.chat_id, document=open(dk.PROGRAM_PATH, 'rb'))
-    reply_keyboard = [
-        [context.user_data['localisation']['SHOWPROGRAM']],
-        [context.user_data['localisation']['SHOWPROGRAMTIME']],
-        [context.user_data['localisation']['SEARCHPROGRAM']],
-        [context.user_data['localisation']['SENDPROGRAM']],
-        [context.user_data['localisation']['LANGUAGE']],
-        [context.user_data['localisation']['FEEDBACK']],
-    ]
+
+    reply_keyboard = keyboards.main_menu_keyboard(context)
+    
     update.message.reply_text(
         context.user_data['localisation']['HELLO'],
         reply_markup=ReplyKeyboardMarkup(

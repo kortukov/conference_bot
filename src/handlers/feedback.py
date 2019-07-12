@@ -3,6 +3,7 @@ import logging
 from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
+import keyboards
 
 FEEDBACK_PATH = '../log/feedback.log'
 
@@ -25,7 +26,7 @@ def leave_feedback(update: Update, context: CallbackContext):
         "User %s %s username:%s: leave_feedback", user.first_name, user.last_name, user.username
     )
 
-    reply_keyboard = [[context.user_data['localisation']['TOBEGINNING']]]
+    reply_keyboard = keyboards.to_begin_keyboard(context)
 
     update.message.reply_text(
         context.user_data['localisation']['FEEDBACKMESSAGE'],
@@ -52,17 +53,7 @@ def save_feedback(update: Update, context: CallbackContext):
     context.bot.send_message(
         chat_id=update.message.chat_id, text=context.user_data['localisation']['FEEDBACKTHANKYOU']
     )
-    reply_keyboard = [
-        [context.user_data['localisation']['SHOWPROGRAM']],
-        [context.user_data['localisation']['SHOWPROGRAMTIME']],
-        [context.user_data['localisation']['SEARCHPROGRAM']],
-        [context.user_data['localisation']['SENDPROGRAM']],
-        [context.user_data['localisation']['LANGUAGE']],
-        [context.user_data['localisation']['FEEDBACK']],
-    ]
-
-    if len(context.user_data['marked_list']) != 0:
-        reply_keyboard.append([context.user_data['localisation']['MARKED']])
+    reply_keyboard = keyboards.main_menu_keyboard(context)
 
     update.message.reply_text(
         context.user_data['localisation']['HELLO'],
