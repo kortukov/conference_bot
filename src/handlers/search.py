@@ -1,5 +1,4 @@
 import logging
-import pickle
 
 import telegram
 from telegram import ReplyKeyboardMarkup,  Update
@@ -8,16 +7,14 @@ from telegram.ext import CallbackContext
 from classes import FullEvent
 
 
-PICKLE_PATH = '../event_list.pickle'
-
 logger = logging.getLogger(__name__)
 
-MENU, SEARCHING, SENDING, SENDING_DESCRIPTION, SENDING_DESCRIPTION_TIME, SENDING_TIME, DAYS, SECTION, TIME, FEEDBACK, MARKED = range(
-    11
-)
-event_list = []
-with open(PICKLE_PATH, 'rb') as f:
-    event_list = pickle.load(f)
+dk = None
+
+
+def init_module(data_keeper):
+    global dk
+    dk = data_keeper
 
 
 def search_program(update: Update, context: CallbackContext):
@@ -33,7 +30,7 @@ def search_program(update: Update, context: CallbackContext):
             reply_keyboard, one_time_keyboard=True, resize_keyboard=True
         ),
     )
-    return SEARCHING
+    return dk.SEARCHING
 
 
 def perform_search(update: Update, context: CallbackContext):
@@ -50,7 +47,7 @@ def perform_search(update: Update, context: CallbackContext):
     context.user_data['reply_messages'] = []
     reply_keyboard = [[context.user_data['localisation']['TOBEGINNING']]]
     reply_messages = []
-    for event in event_list:
+    for event in dk.event_list:
         if isinstance(event, FullEvent):
             if message in event.full_str_ru().lower():
                 if message in event.str_ru().lower():
@@ -144,13 +141,13 @@ def perform_search(update: Update, context: CallbackContext):
             ),
         )
 
-    return SEARCHING
+    return dk.SEARCHING
 
 
 def search_more(update: Update, context: CallbackContext):
     reply_messages = context.user_data.get('reply_messages', None)
     reply_keyboard = [[context.user_data['localisation']['TOBEGINNING']]]
-    if reply_messages == None or reply_messages == []:
+    if not reply_messages:
         reply_messages = [context.user_data['localisation']['NOTFOUND']]
     else:
         if len(reply_messages) > 5:

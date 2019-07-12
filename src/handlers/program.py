@@ -1,26 +1,22 @@
 from datetime import datetime
 import logging
-import pickle
 
 import telegram
 from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
 from classes import FullEvent, Other
-import helpers
 
-
-PICKLE_PATH = '../event_list.pickle'
 
 logger = logging.getLogger(__name__)
 
-MENU, SEARCHING, SENDING, SENDING_DESCRIPTION, SENDING_DESCRIPTION_TIME, SENDING_TIME, DAYS, SECTION, TIME, FEEDBACK, MARKED = range(
-    11
-)
+dk = None
 
-event_list = []
-with open(PICKLE_PATH, 'rb') as f:
-    event_list = pickle.load(f)
+
+def init_module(data_keeper):
+    global dk
+    dk = data_keeper
+
 
 def show_program(update: Update, context: CallbackContext):
     user = update.message.from_user
@@ -41,7 +37,7 @@ def show_program(update: Update, context: CallbackContext):
         ),
     )
 
-    return DAYS
+    return dk.DAYS
 
 
 def back_to_sections(update: Update, context: CallbackContext):
@@ -65,11 +61,11 @@ def back_to_sections(update: Update, context: CallbackContext):
         ),
     )
 
-    return SECTION
+    return dk.SECTION
+
 
 def send_data(update: Update, context: CallbackContext):
 
-    global event_list
     day = context.user_data['day']
     message = update.message.text
 
@@ -103,7 +99,7 @@ def send_data(update: Update, context: CallbackContext):
 
     events = (
         event
-        for event in event_list
+        for event in dk.event_list
         if datetime.fromtimestamp(event.ts_begin).day == day and event.event_type in types
     )
     for result in events:
@@ -127,7 +123,8 @@ def send_data(update: Update, context: CallbackContext):
             reply_keyboard, one_time_keyboard=True, resize_keyboard=True
         ),
     )
-    return SENDING
+    return dk.SENDING
+
 
 def back_to_message(update: Update, context: CallbackContext):
     message_to_send = context.user_data['message']
@@ -143,10 +140,10 @@ def back_to_message(update: Update, context: CallbackContext):
         ),
     )
 
-    return SENDING
+    return dk.SENDING
+
 
 def send_description(update: Update, context: CallbackContext):
-    global event_list
     day = context.user_data['day']
     message = update.message.text
     user = update.message.from_user
@@ -163,7 +160,7 @@ def send_description(update: Update, context: CallbackContext):
     event = next(
         (
             ev
-            for ev in event_list
+            for ev in dk.event_list
             if (isinstance(ev, FullEvent) or isinstance(ev, Other))
             and ev.number == needed_description_number
         ),
@@ -193,9 +190,9 @@ def send_description(update: Update, context: CallbackContext):
     )
 
     if context.user_data['type'] == 'sections':
-        return SENDING_DESCRIPTION
+        return dk.SENDING_DESCRIPTION
     elif context.user_data['type'] == 'time':
-        return SENDING_DESCRIPTION_TIME
+        return dk.SENDING_DESCRIPTION_TIME
     elif context.user_data['type'] == 'search':
         update.message.reply_text(context.user_data['localisation']['WHATSEARCH'])
-        return SEARCHING
+        return dk.SEARCHING

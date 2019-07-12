@@ -1,5 +1,4 @@
 import logging
-import pickle
 
 import telegram
 from telegram import ReplyKeyboardMarkup, Update
@@ -8,20 +7,17 @@ from telegram.ext import CallbackContext
 from classes import FullEvent, Other
 
 
-PICKLE_PATH = '../event_list.pickle'
-event_list = []
-with open(PICKLE_PATH, 'rb') as f:
-    event_list = pickle.load(f)
-
-MENU, SEARCHING, SENDING, SENDING_DESCRIPTION, SENDING_DESCRIPTION_TIME, SENDING_TIME, DAYS, SECTION, TIME, FEEDBACK, MARKED = range(
-    11
-)
-
 logger = logging.getLogger(__name__)
+
+dk = None
+
+
+def init_module(data_keeper):
+    global dk
+    dk = data_keeper
 
 
 def mark_and_unmark_talk(update: Update, context: CallbackContext):
-    global event_list
     day = context.user_data['day']
     message = update.message.text
     user = update.message.from_user
@@ -34,7 +30,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
     )
 
     needed_number = int(message.split('k')[-1])  # markN
-    for event in event_list:
+    for event in dk.event_list:
         if isinstance(event, FullEvent):
             for talk in event.sublist:
                 if needed_number == talk[3]:
@@ -67,7 +63,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
         event = next(
             (
                 ev
-                for ev in event_list
+                for ev in dk.event_list
                 if (isinstance(ev, FullEvent) or isinstance(ev, Other))
                 and ev.number == needed_description_number
             ),
@@ -92,9 +88,9 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
             ),
         )
         if context.user_data['type'] == 'sections':
-            return SENDING_DESCRIPTION
+            return dk.SENDING_DESCRIPTION
         elif context.user_data['type'] == 'time':
-            return SENDING_DESCRIPTION_TIME
+            return dk.SENDING_DESCRIPTION_TIME
 
     elif context.user_data['type'] == 'search':
         reply_messages = context.user_data['search_reply_messages']
@@ -114,7 +110,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                 ),
             )
 
-        return SEARCHING
+        return dk.SEARCHING
 
     elif context.user_data['type'] == 'marked':
         marked_list = context.user_data['marked_list']
@@ -128,11 +124,10 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                 ),
             )
 
-        return MARKED
+        return dk.MARKED
 
 
 def show_marked_talks(update: Update, context: CallbackContext):
-    message = update.message.text
     user = update.message.from_user
     logger.info(
         "User %s %s username:%s: show_marked_talks", user.first_name, user.last_name, user.username
@@ -151,4 +146,4 @@ def show_marked_talks(update: Update, context: CallbackContext):
             ),
         )
 
-    return MARKED
+    return dk.MARKED

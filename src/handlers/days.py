@@ -1,21 +1,23 @@
 import logging
 
-
 from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
 import helpers
 
-MENU, SEARCHING, SENDING, SENDING_DESCRIPTION, SENDING_DESCRIPTION_TIME, SENDING_TIME, DAYS, SECTION, TIME, FEEDBACK, MARKED = range(
-    11
-)
 
 logger = logging.getLogger(__name__)
+
+dk = None
+
+
+def init_module(data_keeper):
+    global dk
+    dk = data_keeper
 
 
 def choose_days(update: Update, context: CallbackContext):
     # here goes the code that saves the day
-    global event_list
     day = int(update.message.text.split(' ')[0])
     user = update.message.from_user
     logger.info(
@@ -52,7 +54,7 @@ def choose_days(update: Update, context: CallbackContext):
                 reply_keyboard, one_time_keyboard=True, resize_keyboard=True
             ),
         )
-        return TIME
+        return dk.TIME
     else:
         reply_keyboard = [
             [context.user_data['localisation']['PLENARY']],
@@ -72,7 +74,7 @@ def choose_days(update: Update, context: CallbackContext):
             ),
         )
 
-        return SECTION
+        return dk.SECTION
 
 
 def back_to_days(update: Update, context: CallbackContext):
@@ -89,6 +91,6 @@ def back_to_days(update: Update, context: CallbackContext):
         ),
     )
 
-    return DAYS
+    return dk.DAYS
 
 

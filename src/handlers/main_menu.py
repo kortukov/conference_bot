@@ -1,20 +1,23 @@
 import logging
 
-from telegram import  ReplyKeyboardMarkup,  Update
+from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
 import languages
 
+
 logger = logging.getLogger(__name__)
 
-PROGRAM_PATH = '../program2018.pdf'
+dk = None
 
-MENU, SEARCHING, SENDING, SENDING_DESCRIPTION, SENDING_DESCRIPTION_TIME, SENDING_TIME, DAYS, SECTION, TIME, FEEDBACK, MARKED = range(
-    11
-)
+
+def init_module(data_keeper):
+    global dk
+    dk = data_keeper
 
 
 def beginning(update: Update, context: CallbackContext):
+    logger.critical(dk.event_list)
     user = update.message.from_user
     logger.info(
         "User %s %s username:%s started the conversation.",
@@ -49,7 +52,7 @@ def beginning(update: Update, context: CallbackContext):
         ),
     )
 
-    return MENU
+    return dk.MENU
 
 
 def change_lang(update: Update, context: CallbackContext):
@@ -88,14 +91,14 @@ def change_lang(update: Update, context: CallbackContext):
         ),
     )
 
-    return MENU
+    return dk.MENU
 
 
 def send_pdf(update: Update, context: CallbackContext):
     user = update.message.from_user
     logger.info("User %s %s username:%s: send_pdf", user.first_name, user.last_name, user.username)
 
-    context.bot.send_document(chat_id=update.message.chat_id, document=open(PROGRAM_PATH, 'rb'))
+    context.bot.send_document(chat_id=update.message.chat_id, document=open(dk.PROGRAM_PATH, 'rb'))
     reply_keyboard = [
         [context.user_data['localisation']['SHOWPROGRAM']],
         [context.user_data['localisation']['SHOWPROGRAMTIME']],
@@ -111,5 +114,4 @@ def send_pdf(update: Update, context: CallbackContext):
         ),
     )
 
-    return MENU
-
+    return dk.MENU

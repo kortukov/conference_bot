@@ -1,17 +1,17 @@
 from datetime import datetime
-import pickle
 
 from read_data import get_timestamp
 
 
-PICKLE_PATH = '../event_list.pickle'
-event_list = []
-with open(PICKLE_PATH, 'rb') as f:
-    event_list = pickle.load(f)
+dk = None
+
+
+def init_module(data_keeper):
+    global dk
+    dk = data_keeper
 
 
 def create_times_without_food_list(day):
-    global event_list
     times_list = create_times_list(day)
     new_times_list = []
     for time_bounds in times_list:
@@ -22,7 +22,7 @@ def create_times_without_food_list(day):
         ts_end = get_timestamp(day, int(end.split(':')[0]), int(end.split(':')[1]))
         events = [
             event
-            for event in event_list
+            for event in dk.event_list
             if datetime.fromtimestamp(event.ts_begin).day == day
             and ts_begin == event.ts_begin
             or ts_end == event.ts_end
@@ -35,10 +35,9 @@ def create_times_without_food_list(day):
 
 
 def create_times_list(day):
-    global event_list
     ts_list = [
         [event.ts_begin, event.ts_end]
-        for event in event_list
+        for event in dk.event_list
         if datetime.fromtimestamp(event.ts_begin).day == day
     ]
     for i in range(len(ts_list)):
@@ -73,7 +72,6 @@ def create_times_list(day):
 
 
 def create_all_times_regex():
-    global event_list
     all_times = []
     for day in range(24, 26):
         times_list = create_times_list(day)

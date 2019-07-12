@@ -1,6 +1,5 @@
 from datetime import datetime
 import logging
-import pickle
 
 import telegram
 from telegram import ReplyKeyboardMarkup, Update
@@ -11,17 +10,14 @@ import helpers
 from read_data import get_timestamp
 
 
-PICKLE_PATH = '../event_list.pickle'
-
 logger = logging.getLogger(__name__)
 
-MENU, SEARCHING, SENDING, SENDING_DESCRIPTION, SENDING_DESCRIPTION_TIME, SENDING_TIME, DAYS, SECTION, TIME, FEEDBACK, MARKED = range(
-    11
-)
+dk = None
 
-event_list = []
-with open(PICKLE_PATH, 'rb') as f:
-    event_list = pickle.load(f)
+
+def init_module(data_keeper):
+    global dk
+    dk = data_keeper
 
 
 def show_program_time(update: Update, context: CallbackContext):
@@ -42,11 +38,10 @@ def show_program_time(update: Update, context: CallbackContext):
         ),
     )
 
-    return DAYS
+    return dk.DAYS
 
 
 def back_to_time(update: Update, context: CallbackContext):
-    global event_list
     day = context.user_data['day']
     times_list = helpers.create_times_without_food_list(day)
     reply_keyboard = []
@@ -71,11 +66,10 @@ def back_to_time(update: Update, context: CallbackContext):
         ),
     )
 
-    return TIME
+    return dk.TIME
 
 
 def choose_time(update: Update, context: CallbackContext):
-    global event_list
     day = context.user_data['day']
     time_bounds = update.message.text
     user = update.message.from_user
@@ -97,7 +91,7 @@ def choose_time(update: Update, context: CallbackContext):
     # Здесь уже пора выдавать данные
     events = (
         event
-        for event in event_list
+        for event in dk.event_list
         if datetime.fromtimestamp(event.ts_begin).day == day
         and ts_begin == event.ts_begin
         or ts_end == event.ts_end
@@ -132,7 +126,7 @@ def choose_time(update: Update, context: CallbackContext):
         ),
     )
 
-    return SENDING_TIME
+    return dk.SENDING_TIME
 
 
 def back_to_message_time(update: Update, context: CallbackContext):
@@ -149,5 +143,5 @@ def back_to_message_time(update: Update, context: CallbackContext):
         ),
     )
 
-    return SENDING_TIME
+    return dk.SENDING_TIME
 

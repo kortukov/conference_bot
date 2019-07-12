@@ -4,7 +4,6 @@ from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
 
-
 FEEDBACK_PATH = '../log/feedback.log'
 
 logger = logging.getLogger(__name__)
@@ -12,10 +11,12 @@ feedback_logger = logging.getLogger('feedback_logger')
 f_handler = logging.FileHandler(FEEDBACK_PATH)
 feedback_logger.addHandler(f_handler)
 
+dk = None
 
-MENU, SEARCHING, SENDING, SENDING_DESCRIPTION, SENDING_DESCRIPTION_TIME, SENDING_TIME, DAYS, SECTION, TIME, FEEDBACK, MARKED = range(
-    11
-)
+
+def init_module(data_keeper):
+    global dk
+    dk = data_keeper
 
 
 def leave_feedback(update: Update, context: CallbackContext):
@@ -33,7 +34,7 @@ def leave_feedback(update: Update, context: CallbackContext):
         ),
     )
 
-    return FEEDBACK
+    return dk.FEEDBACK
 
 
 def save_feedback(update: Update, context: CallbackContext):
@@ -70,4 +71,4 @@ def save_feedback(update: Update, context: CallbackContext):
         ),
     )
 
-    return MENU
+    return dk.MENU
