@@ -66,10 +66,10 @@ def perform_search(update: Update, context: CallbackContext):
                     context.user_data['day'] = event.get_date()
                     reply_messages.append(reply)
                 else:
-                    for talk in event.sublist:
-                        for part in talk:
+                    for talk in event.talks_list:
+                        for part in talk.__dict__.values():
                             if message in str(part).lower():
-                                number = event.sublist.index(talk)
+                                number = event.talks_list.index(talk)
                                 reply = (
                                     context.user_data['localisation'][str(event.get_date())]
                                     + '\n'
@@ -94,10 +94,10 @@ def perform_search(update: Update, context: CallbackContext):
                     context.user_data['day'] = event.get_date()
                     reply_messages.append(reply)
                 else:
-                    for talk in event.sublist:
-                        for part in talk:
+                    for talk in event.talks_list:
+                        for part in talk.__dict__.values():
                             if message in str(part).lower():
-                                number = event.sublist.index(talk)
+                                number = event.talks_list.index(talk)
                                 reply = (
                                     context.user_data['localisation'][str(event.get_date())]
                                     + '\n'

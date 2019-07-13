@@ -122,14 +122,14 @@ class Other(SimpleEvent):
     def full_str_ru(self):
         result = ""
         result = super().str_ru() + '\n\n'
-        if self.description != None:
+        if self.description is not None:
             result += "Описание:\n\t" + self.description
         return result
 
     def full_str_en(self):
         result = ""
         result = super().str_en() + '\n\n'
-        if self.description != None:
+        if self.description is not None:
             result += "Description:\n\t" + self.description
         return result
 
@@ -138,9 +138,7 @@ class Other(SimpleEvent):
 class FullEvent(BaseEvent):
     # full events have numbers for commands that print full description
     def __init__(self, ts_begin, ts_end, place_id, event_type, title_ru, title_en, number):
-        self.sublist = (
-            []
-        )  # list of list [name: str, authors: str, lecturer: str, number: int, marked: boolean]
+        self.talks_list = []  # list of Talk objects
         self.number = number
         super().__init__(ts_begin, ts_end, place_id, event_type, title_ru, title_en)
 
@@ -148,72 +146,69 @@ class FullEvent(BaseEvent):
         return super().__str__()
 
     def full_str_ru(self):
-        result = ""
         result = super().str_ru() + '\n\n'
-        for element in self.sublist:
-            result = result + "<b>" + element[0] + '</b>\n'
-            if element[1] != "":
-                result = result + "Авторы:\n\t" + element[1] + '\n'
-            if element[2] != "":
-                result = result + "Докладчик:\n\t" + element[2] + '\n'
-            if element[3]:
-                if element[4] == False:  # marked
-                    result = result + 'Отметить доклад: /mark' + str(element[3]) + '\n'
+        for talk in self.talks_list:
+            result = result + "<b>" + talk.title + '</b>\n'
+            if talk.authors:
+                result = result + "Авторы:\n\t" + talk.authors + '\n'
+            if talk.speaker:
+                result = result + "Докладчик:\n\t" + talk.speaker + '\n'
+            if talk.talk_number:
+                if not talk.is_marked:  # marked
+                    result = result + 'Отметить доклад: /mark' + str(talk.talk_number) + '\n'
                 else:
-                    result = result + 'Убрать отметку: /unmark' + str(element[3]) + '\n'
-
+                    result = result + 'Убрать отметку: /unmark' + str(talk.talk_number) + '\n'
         return result
 
     def one_talk_str_ru(self, number):
-        result = ""
         result = super().str_ru() + '\n\n'
-        if number >= len(self.sublist):
+        if number >= len(self.talks_list):
             return ''
-        element = self.sublist[number]
-        result = result + "<b>" + element[0] + '</b>\n'
-        if element[1] != "":
-            result = result + "Авторы:\n\t" + element[1] + '\n'
-        if element[2] != "":
-            result = result + "Докладчик:\n\t" + element[2] + '\n\n'
-        if element[3]:
-            if element[4] == False:  # marked
-                result = result + 'Отметить доклад: /mark' + str(element[3]) + '\n'
+        talk = self.talks_list[number]
+        result = result + "<b>" + talk.title + '</b>\n'
+        if talk.authors:
+            result = result + "Авторы:\n\t" + talk.authors + '\n'
+        if talk.speaker:
+            result = result + "Докладчик:\n\t" + talk.speaker + '\n\n'
+        if talk.talk_number:
+            if not talk.is_marked:  # marked
+                result = result + 'Отметить доклад: /mark' + str(talk.talk_number) + '\n'
             else:
-                result = result + 'Убрать отметку: /unmark' + str(element[3]) + '\n'
+                result = result + 'Убрать отметку: /unmark' + str(talk.talk_number) + '\n'
         return result
 
     def full_str_en(self):
         result = ""
         result = super().str_en() + '\n\n'
-        for element in self.sublist:
-            result = result + "<b>" + element[0] + '</b>\n'
-            if element[1] != "":
-                result = result + "Authors:\n\t" + element[1] + '\n'
-            if element[2] != "":
-                result = result + "Speaker:\n\t" + element[2] + '\n\n'
-            if element[3]:
-                if element[4] == False:  # marked
-                    result = result + 'Mark talk: /mark' + str(element[3]) + '\n'
+        for talk in self.talks_list:
+            result = result + "<b>" + talk.title + '</b>\n'
+            if talk.authors:
+                result = result + "Authors:\n\t" + talk.authors + '\n'
+            if talk.speaker != "":
+                result = result + "Speaker:\n\t" + talk.speaker + '\n\n'
+            if talk.talk_number:
+                if not talk.is_marked:  # marked
+                    result = result + 'Mark talk: /mark' + str(talk.talk_number) + '\n'
                 else:
-                    result = result + 'Remove mark: /unmark' + str(element[3]) + '\n'
+                    result = result + 'Remove mark: /unmark' + str(talk.talk_number) + '\n'
         return result
 
     def one_talk_str_en(self, number):
         result = ""
         result = super().str_en() + '\n\n'
-        if number >= len(self.sublist):
+        if number >= len(self.talks_list):
             return ''
-        element = self.sublist[number]
-        result = result + "<b>" + element[0] + '</b>\n'
-        if element[1] != "":
-            result = result + "Authors:\n\t" + element[1] + '\n'
-        if element[2] != "":
-            result = result + "Speaker:\n\t" + element[2] + '\n\n'
-        if element[3]:
-            if element[4] == False:  # marked
-                result = result + 'Mark talk: /mark' + str(element[3]) + '\n'
+        talk = self.talks_list[number]
+        result = result + "<b>" + talk.title + '</b>\n'
+        if talk.authors:
+            result = result + "Authors:\n\t" + talk.authors + '\n'
+        if talk.speaker:
+            result = result + "Speaker:\n\t" + talk.speaker + '\n\n'
+        if talk.talk_number:
+            if not talk.is_marked:  # marked
+                result = result + 'Mark talk: /mark' + str(talk.talk_number) + '\n'
             else:
-                result = result + 'Remove mark: /unmark' + str(element[3]) + '\n'
+                result = result + 'Remove mark: /unmark' + str(talk.talk_number) + '\n'
         return result
 
 
@@ -237,3 +232,14 @@ class OtherFull(FullEvent):
         super().__init__(
             ts_begin, ts_end, place_id, "Other full events", title_ru, title_en, number
         )
+
+
+class Talk:
+    def __init__(self, title, authors, speaker, talk_number, is_marked=False):
+        self.title = title
+        self.authors = authors
+        self.speaker = speaker
+        self.talk_number = talk_number
+        self.is_marked = is_marked
+        self.ts_begin = None
+        self.ts_end = None

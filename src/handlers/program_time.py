@@ -6,7 +6,6 @@ from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
 from classes import FullEvent, Other
-import helpers
 import keyboards
 from read_data import get_timestamp
 

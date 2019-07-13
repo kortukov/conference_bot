@@ -36,8 +36,8 @@ def create_coversation_handler(data_keeper):
     unmark_handlers = []
     for event in data_keeper.event_list:
         if isinstance(event, FullEvent):
-            for talk in event.sublist:
-                talk_number = talk[3]
+            for talk in event.talks_list:
+                talk_number = talk.talk_number
                 mark_command = 'mark' + str(talk_number)
                 mark_handlers.append(CommandHandler(mark_command, mark_talks.mark_and_unmark_talk))
                 unmark_command = 'unmark' + str(talk_number)

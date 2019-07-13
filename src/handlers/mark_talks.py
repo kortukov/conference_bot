@@ -32,12 +32,12 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
     needed_number = int(message.split('k')[-1])  # markN
     for event in dk.event_list:
         if isinstance(event, FullEvent):
-            for talk in event.sublist:
-                if needed_number == talk[3]:
-                    if talk[4] == False:
-                        talk[4] = True
+            for talk in event.talks_list:
+                if needed_number == talk.talk_number:
+                    if not talk.is_marked:
+                        talk.is_marked = True
 
-                        talk_index = event.sublist.index(talk)
+                        talk_index = event.talks_list.index(talk)
                         if context.user_data['lang'] == 'ru':
                             context.user_data['marked_list'].append(
                                 context.user_data['localisation'][str(event.get_date())]
@@ -51,7 +51,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                                 + event.one_talk_str_en(talk_index)
                             )
                     else:
-                        talk[4] = False
+                        talk.is_marked = False
                         for i in range(len(context.user_data['marked_list'])):
                             if "mark" + str(needed_number) in context.user_data['marked_list'][i]:
                                 del context.user_data['marked_list'][i]

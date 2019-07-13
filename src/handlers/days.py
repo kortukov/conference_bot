@@ -3,7 +3,6 @@ import logging
 from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
-import helpers
 import keyboards
 
 logger = logging.getLogger(__name__)

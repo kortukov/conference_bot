@@ -20,7 +20,8 @@ def init_module(data_keeper):
 def beginning(update: Update, context: CallbackContext):
     user = update.message.from_user
     logger.info(
-        "User %s %s username:%s started the conversation.",
+        "Chat_id %s User %s %s username:%s started the conversation.",
+        update.message.chat_id,
         user.first_name,
         user.last_name,
         user.username,
@@ -81,7 +82,7 @@ def send_pdf(update: Update, context: CallbackContext):
     context.bot.send_document(chat_id=update.message.chat_id, document=open(dk.PROGRAM_PATH, 'rb'))
 
     reply_keyboard = keyboards.main_menu_keyboard(context)
-    
+
     update.message.reply_text(
         context.user_data['localisation']['HELLO'],
         reply_markup=ReplyKeyboardMarkup(

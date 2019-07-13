@@ -8,6 +8,7 @@ from classes import (
     Research,
     Young,
     OtherFull,
+    Talk,
 )
 from datetime import datetime
 import time
@@ -185,12 +186,15 @@ if __name__ == '__main__':
                         current_authors = current_authors + talks_list[j + k].text.strip('\n')
 
                         k = k + 1
-                    event.sublist.append(
-                        [current_talk, current_authors, current_speaker, talks_counter, False]
+
+                    event.talks_list.append(
+                        Talk(current_talk, current_authors, current_speaker, talks_counter)
                     )
                     talks_counter += 1
 
                 j = j + 1
+
+            event.calculate_talk_times()
 
         if isinstance(event, Other):  # Looking for description
             description_lines = []
@@ -208,6 +212,7 @@ if __name__ == '__main__':
                 event.description = description
 
         event_list.append(event)
+
 
     if mode == 'print':
         for event in event_list:
