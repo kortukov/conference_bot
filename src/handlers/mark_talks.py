@@ -36,26 +36,19 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                 if needed_number == talk.talk_number:
                     if not talk.is_marked:
                         talk.is_marked = True
-
-                        talk_index = event.talks_list.index(talk)
-                        if context.user_data['lang'] == 'ru':
-                            context.user_data['marked_list'].append(
-                                context.user_data['localisation'][str(event.get_date())]
-                                + '\n'
-                                + event.one_talk_str_ru(talk_index)
-                            )
-                        else:
-                            context.user_data['marked_list'].append(
-                                context.user_data['localisation'][str(event.get_date())]
-                                + '\n'
-                                + event.one_talk_str_en(talk_index)
-                            )
+                        context.user_data['marked_list'].append(talk)
                     else:
-                        talk.is_marked = False
-                        for i in range(len(context.user_data['marked_list'])):
-                            if "mark" + str(needed_number) in context.user_data['marked_list'][i]:
-                                del context.user_data['marked_list'][i]
-                                break
+                        talk_to_unmark = next(
+                            (
+                                talk
+                                for talk in context.user_data['marked_list']
+                                if talk.talk_number == needed_number
+                            ),
+                            None,
+                        )
+                        if talk_to_unmark:
+                            context.user_data['marked_list'].remove(talk_to_unmark)
+                            talk_to_unmark.is_marked = False
 
     # Sending previous message again, but updated
     if context.user_data['type'] == 'sections' or context.user_data['type'] == 'time':
@@ -94,7 +87,21 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
         # update the needed message
         for i in range(len(reply_messages)):
             if "mark" + str(needed_number) in reply_messages[i]:
-                reply_messages[i] = context.user_data['marked_list'][-1]
+                needed_talk = next(
+                    (
+                        talk
+                        for event in dk.event_list
+                        if isinstance(event, FullEvent)
+                        for talk in event.talks_list
+                        if talk.talk_number == needed_number
+                    ),
+                    None,
+                )
+                if context.user_data['lang'] == 'ru':
+                    reply_messages[i] = needed_talk.str_ru() if needed_talk else ""
+
+                else:
+                    reply_messages[i] = context.user_data['marked_list'][-1].str_en()
 
         reply_keyboard = keyboards.to_begin_keyboard(context)
 
@@ -112,7 +119,11 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
     elif context.user_data['type'] == 'marked':
         marked_list = context.user_data['marked_list']
         reply_keyboard = keyboards.to_begin_keyboard(context)
-        for reply_message in marked_list:
+        for marked_talk in marked_list:
+            if context.user_data['lang'] == 'ru':
+                reply_message = marked_talk.str_ru()
+            else:
+                reply_message = marked_talk.str_en()
             update.message.reply_text(
                 reply_message,
                 parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
@@ -134,7 +145,13 @@ def show_marked_talks(update: Update, context: CallbackContext):
     marked_list = context.user_data['marked_list']
 
     reply_keyboard = keyboards.to_begin_keyboard(context)
-    for reply_message in marked_list:
+
+    for marked_talk in marked_list:
+        if context.user_data['lang'] == 'ru':
+            reply_message = marked_talk.str_ru()
+        else:
+            reply_message = marked_talk.str_en()
+
         update.message.reply_text(
             reply_message,
             parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
