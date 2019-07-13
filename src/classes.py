@@ -148,16 +148,7 @@ class FullEvent(BaseEvent):
     def full_str_ru(self):
         result = super().str_ru() + '\n\n'
         for talk in self.talks_list:
-            result = result + "<b>" + talk.title + '</b>\n'
-            if talk.authors:
-                result = result + "Авторы:\n\t" + talk.authors + '\n'
-            if talk.speaker:
-                result = result + "Докладчик:\n\t" + talk.speaker + '\n'
-            if talk.talk_number:
-                if not talk.is_marked:  # marked
-                    result = result + 'Отметить доклад: /mark' + str(talk.talk_number) + '\n'
-                else:
-                    result = result + 'Убрать отметку: /unmark' + str(talk.talk_number) + '\n'
+            result = result + talk.str_ru()
         return result
 
     def one_talk_str_ru(self, number):
@@ -165,51 +156,29 @@ class FullEvent(BaseEvent):
         if number >= len(self.talks_list):
             return ''
         talk = self.talks_list[number]
-        result = result + "<b>" + talk.title + '</b>\n'
-        if talk.authors:
-            result = result + "Авторы:\n\t" + talk.authors + '\n'
-        if talk.speaker:
-            result = result + "Докладчик:\n\t" + talk.speaker + '\n\n'
-        if talk.talk_number:
-            if not talk.is_marked:  # marked
-                result = result + 'Отметить доклад: /mark' + str(talk.talk_number) + '\n'
-            else:
-                result = result + 'Убрать отметку: /unmark' + str(talk.talk_number) + '\n'
-        return result
+        return result + talk.str_ru()
 
     def full_str_en(self):
-        result = ""
         result = super().str_en() + '\n\n'
         for talk in self.talks_list:
-            result = result + "<b>" + talk.title + '</b>\n'
-            if talk.authors:
-                result = result + "Authors:\n\t" + talk.authors + '\n'
-            if talk.speaker != "":
-                result = result + "Speaker:\n\t" + talk.speaker + '\n\n'
-            if talk.talk_number:
-                if not talk.is_marked:  # marked
-                    result = result + 'Mark talk: /mark' + str(talk.talk_number) + '\n'
-                else:
-                    result = result + 'Remove mark: /unmark' + str(talk.talk_number) + '\n'
+            result = result + talk.str_en()
         return result
 
     def one_talk_str_en(self, number):
-        result = ""
         result = super().str_en() + '\n\n'
         if number >= len(self.talks_list):
             return ''
         talk = self.talks_list[number]
-        result = result + "<b>" + talk.title + '</b>\n'
-        if talk.authors:
-            result = result + "Authors:\n\t" + talk.authors + '\n'
-        if talk.speaker:
-            result = result + "Speaker:\n\t" + talk.speaker + '\n\n'
-        if talk.talk_number:
-            if not talk.is_marked:  # marked
-                result = result + 'Mark talk: /mark' + str(talk.talk_number) + '\n'
-            else:
-                result = result + 'Remove mark: /unmark' + str(talk.talk_number) + '\n'
-        return result
+        return result + talk.str_en()
+
+    def calculate_talk_times(self):
+        event_begin = self.ts_begin
+        event_end = self.ts_end
+        times_diff = event_end - event_begin
+        num_of_talks = len(self.talks_list)
+        for index, talk in enumerate(self.talks_list):
+            talk.ts_begin = event_begin + (index * (times_diff / num_of_talks))
+            talk.ts_end = event_begin + ((index + 1) * (times_diff / num_of_talks))
 
 
 class Plenary(FullEvent):
@@ -243,3 +212,49 @@ class Talk:
         self.is_marked = is_marked
         self.ts_begin = None
         self.ts_end = None
+
+    def str_ru(self):
+        result = "<b>" + self.title + '</b>\n'
+        if self.authors:
+            result = result + "Авторы:\n\t" + self.authors + '\n'
+        if self.speaker:
+            result = result + "Докладчик:\n\t" + self.speaker + '\n'
+        if self.ts_begin and self.ts_end:
+            result = (
+                    result
+                    + "Время: "
+                    + str(datetime.fromtimestamp(self.ts_begin).time())[:-3]
+                    + " - "
+                    + str(datetime.fromtimestamp(self.ts_end).time())[:-3]
+                    + '\n'
+            )
+        if self.talk_number:
+            if not self.is_marked:  # marked
+                result = result + 'Отметить доклад: /mark' + str(self.talk_number) + '\n'
+            else:
+                result = result + 'Убрать отметку: /unmark' + str(self.talk_number) + '\n'
+
+        return result
+
+    def str_en(self):
+        result = "<b>" + self.title + '</b>\n'
+        if self.authors:
+            result = result + "Authors:\n\t" + self.authors + '\n'
+        if self.speaker:
+            result = result + "Speaker:\n\t" + self.speaker + '\n'
+        if self.ts_begin and self.ts_end:
+            result = (
+                    result
+                    + "Time: "
+                    + str(datetime.fromtimestamp(self.ts_begin).time())[:-3]
+                    + " - "
+                    + str(datetime.fromtimestamp(self.ts_end).time())[:-3]
+                    + '\n'
+            )
+        if self.talk_number:
+            if not self.is_marked:  # marked
+                result = result + 'Mark talk: /mark' + str(self.talk_number) + '\n'
+            else:
+                result = result + 'Remove mark: /unmark' + str(self.talk_number) + '\n'
+
+        return result

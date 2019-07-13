@@ -194,8 +194,6 @@ if __name__ == '__main__':
 
                 j = j + 1
 
-            event.calculate_talk_times()
-
         if isinstance(event, Other):  # Looking for description
             description_lines = []
             description = ""
@@ -212,6 +210,10 @@ if __name__ == '__main__':
                 event.description = description
 
         event_list.append(event)
+
+    for event in event_list:
+        if isinstance(event, FullEvent):
+            event.calculate_talk_times()
 
 
     if mode == 'print':
