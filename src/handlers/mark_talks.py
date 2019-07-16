@@ -250,7 +250,12 @@ def find_time_intersections(context: CallbackContext):
             talk_1 = talks_list[i]
             talk_2 = talks_list[j]
             if check_talks_for_intersection(talk_1, talk_2):
-                intersection_list.append(talk_1.title + ' ----- ' + talk_2.title + '\n')
+                if context.user_data['lang'] == 'ru':
+                    intersection = talk_1.intersect_str(talk_2, eng=False)
+                else:
+                    intersection = talk_2.intersect_str(talk_2, eng=True)
+
+                intersection_list.append(intersection)
 
     return intersection_list
 

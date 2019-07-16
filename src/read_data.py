@@ -188,7 +188,11 @@ if __name__ == '__main__':
                         k = k + 1
 
                     event.talks_list.append(
-                        Talk(current_talk, current_authors, current_speaker, talks_counter)
+                        Talk(title=current_talk,
+                             authors=current_authors,
+                             speaker=current_speaker,
+                             hall=current_place,
+                             talk_number=talks_counter)
                     )
                     talks_counter += 1
 

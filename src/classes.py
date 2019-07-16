@@ -148,7 +148,7 @@ class FullEvent(BaseEvent):
     def full_str_ru(self):
         result = super().str_ru() + '\n\n'
         for talk in self.talks_list:
-            result = result + talk.str_ru()
+            result = result + talk.str_ru(short=True)
         return result
 
     def one_talk_str_ru(self, number):
@@ -156,12 +156,12 @@ class FullEvent(BaseEvent):
         if number >= len(self.talks_list):
             return ''
         talk = self.talks_list[number]
-        return result + talk.str_ru()
+        return result + talk.str_ru(short=True)
 
     def full_str_en(self):
         result = super().str_en() + '\n\n'
         for talk in self.talks_list:
-            result = result + talk.str_en()
+            result = result + talk.str_en(short=True)
         return result
 
     def one_talk_str_en(self, number):
@@ -169,7 +169,7 @@ class FullEvent(BaseEvent):
         if number >= len(self.talks_list):
             return ''
         talk = self.talks_list[number]
-        return result + talk.str_en()
+        return result + talk.str_en(short=True)
 
     def calculate_talk_times(self):
         event_begin = self.ts_begin
@@ -204,30 +204,34 @@ class OtherFull(FullEvent):
 
 
 class Talk:
-    def __init__(self, title, authors, speaker, talk_number, is_marked=False):
+    def __init__(self, title, authors, speaker, hall, talk_number, is_marked=False):
         self.title = title
         self.authors = authors
         self.speaker = speaker
+        self._hall = hall
         self.talk_number = talk_number
         self.is_marked = is_marked
         self.ts_begin = None
         self.ts_end = None
 
-    def str_ru(self):
+    @property
+    def hall_ru(self):
+        return get_place(self._hall)
+
+    @property
+    def hall_en(self):
+        return get_place(self._hall, eng=True)
+
+    def str_ru(self, short=False):
         result = "<b>" + self.title + '</b>\n'
         if self.authors:
             result = result + "Авторы:\n\t" + self.authors + '\n'
         if self.speaker:
             result = result + "Докладчик:\n\t" + self.speaker + '\n'
         if self.ts_begin and self.ts_end:
-            result = (
-                    result
-                    + "Время: "
-                    + str(datetime.fromtimestamp(self.ts_begin).time())[:-3]
-                    + " - "
-                    + str(datetime.fromtimestamp(self.ts_end).time())[:-3]
-                    + '\n'
-            )
+            result = result + self.get_datetime_ru()
+        if self._hall and not short:
+            result = result + "Зал: <b>" + self.hall_ru + '</b>\n'
         if self.talk_number:
             if not self.is_marked:  # marked
                 result = result + 'Отметить доклад: /mark' + str(self.talk_number) + '\n'
@@ -236,21 +240,16 @@ class Talk:
 
         return result
 
-    def str_en(self):
+    def str_en(self, short=False):
         result = "<b>" + self.title + '</b>\n'
         if self.authors:
             result = result + "Authors:\n\t" + self.authors + '\n'
         if self.speaker:
             result = result + "Speaker:\n\t" + self.speaker + '\n'
         if self.ts_begin and self.ts_end:
-            result = (
-                    result
-                    + "Time: "
-                    + str(datetime.fromtimestamp(self.ts_begin).time())[:-3]
-                    + " - "
-                    + str(datetime.fromtimestamp(self.ts_end).time())[:-3]
-                    + '\n'
-            )
+            result = result + self.get_datetime_en()
+        if self._hall and not short:
+            result = result + "Hall: <b>" + self.hall_en + '</b>\n'
         if self.talk_number:
             if not self.is_marked:  # marked
                 result = result + 'Mark talk: /mark' + str(self.talk_number) + '\n'
@@ -258,3 +257,53 @@ class Talk:
                 result = result + 'Remove mark: /unmark' + str(self.talk_number) + '\n'
 
         return result
+
+    def get_datetime_ru(self):
+        result = (
+            "Время: "
+            + str(datetime.fromtimestamp(self.ts_begin).day)
+            + ".09 <b>"
+            + str(datetime.fromtimestamp(self.ts_begin).time())[:-3]
+            + " - "
+            + str(datetime.fromtimestamp(self.ts_end).time())[:-3]
+            + '</b>\n '
+        )
+        return result
+
+    def get_datetime_en(self):
+        result = (
+            "Time: "
+            + str(datetime.fromtimestamp(self.ts_begin).day)
+            + ".09 <b>"
+            + str(datetime.fromtimestamp(self.ts_begin).time())[:-3]
+            + " - "
+            + str(datetime.fromtimestamp(self.ts_end).time())[:-3]
+            + '</b>\n '
+        )
+        return result
+
+    def intersect_str(self, talk_2, eng=False):
+        if eng:
+            return (
+                self.get_datetime_en()
+                + self.title
+                + ' <b>'
+                + self.hall_en
+                + '</b>\n----\n'
+                + talk_2.title
+                + ' <b>'
+                + talk_2.hall_en
+                + '</b>\n'
+            )
+        else:
+            return (
+                self.get_datetime_ru()
+                + self.title
+                + ' <b>'
+                + self.hall_ru
+                + '</b>\n----\n'
+                + talk_2.title
+                + ' <b>'
+                + talk_2.hall_ru
+                + '</b>\n'
+            )
