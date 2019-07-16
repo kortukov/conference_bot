@@ -143,8 +143,10 @@ def show_marked_talks(update: Update, context: CallbackContext):
     context.user_data['type'] = 'marked'
 
     marked_list = context.user_data['marked_list']
-
-    reply_keyboard = keyboards.to_begin_keyboard(context)
+    if find_time_intersections(context):
+        reply_keyboard = keyboards.conflicts_to_begin_keyboard(context)
+    else:
+        reply_keyboard = keyboards.to_begin_keyboard(context)
 
     for marked_talk in marked_list:
         if context.user_data['lang'] == 'ru':
@@ -159,23 +161,53 @@ def show_marked_talks(update: Update, context: CallbackContext):
                 reply_keyboard, one_time_keyboard=True, resize_keyboard=True
             ),
         )
-    intersection_list = find_time_intersections(context)
-    if intersection_list:
-        if context.user_data['lang'] == 'ru':
-            intersection_list.insert(0, "Пересекаются:")
-        else:
-            intersection_list.insert(0, "Conflicts:")
 
-        for intersection in intersection_list:
-            update.message.reply_text(
-                intersection,
-                parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
-                reply_markup=ReplyKeyboardMarkup(
-                    reply_keyboard, one_time_keyboard=True, resize_keyboard=True
-                ),
+    return dk.MARKED
+
+
+def back_to_marked(update: Update, context: CallbackContext):
+    marked_list = context.user_data['marked_list']
+    if find_time_intersections(context):
+        reply_keyboard = keyboards.conflicts_to_begin_keyboard(context)
+    else:
+        reply_keyboard = keyboards.to_begin_keyboard(context)
+    for marked_talk in marked_list:
+        if context.user_data['lang'] == 'ru':
+            reply_message = marked_talk.str_ru()
+        else:
+            reply_message = marked_talk.str_en()
+
+        update.message.reply_text(
+            reply_message,
+            parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
+            reply_markup=ReplyKeyboardMarkup(
+                reply_keyboard, one_time_keyboard=True, resize_keyboard=True
+            ),
         )
 
     return dk.MARKED
+
+
+def show_intersections(update: Update, context: CallbackContext):
+    user = update.message.from_user
+    logger.info(
+        "User %s %s username:%s: show_intersections", user.first_name, user.last_name, user.username
+    )
+    reply_keyboard = keyboards.back_to_begin_keyboard(context)
+
+    intersection_list = find_time_intersections(context)
+    intersection_list.insert(0, context.user_data['localisation']['CONFLICTMESSAGE'])
+
+    for intersection in intersection_list:
+        update.message.reply_text(
+            intersection,
+            parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
+            reply_markup=ReplyKeyboardMarkup(
+                reply_keyboard, one_time_keyboard=True, resize_keyboard=True
+            ),
+        )
+
+    return dk.INTERSECTIONS
 
 
 def find_time_intersections(context: CallbackContext):
@@ -186,7 +218,7 @@ def find_time_intersections(context: CallbackContext):
             talk_1 = talks_list[i]
             talk_2 = talks_list[j]
             if check_talks_for_intersection(talk_1, talk_2):
-                intersection_list.append(talk_1.title + ' -- ' + talk_2.title + '\n')
+                intersection_list.append(talk_1.title + ' ----- ' + talk_2.title + '\n')
 
     return intersection_list
 

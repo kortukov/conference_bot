@@ -77,15 +77,23 @@ def create_coversation_handler(data_keeper):
                     mark_talks.show_marked_talks,
                 ),
             ],
+
             data_keeper.MARKED: [
+                MessageHandler(Filters.regex('^(Пересечения|Сonflicts)'), mark_talks.show_intersections),
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning)
             ]
             + mark_handlers
             + unmark_handlers,
+
+            data_keeper.INTERSECTIONS: [
+                MessageHandler(Filters.regex('^(Назад|Back)$'), mark_talks.back_to_marked),
+                MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning)
+            ],
             data_keeper.FEEDBACK: [
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),
                 MessageHandler(Filters.text, feedback.save_feedback),
             ],
+
             data_keeper.SEARCHING: [
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),
                 MessageHandler(
@@ -96,17 +104,20 @@ def create_coversation_handler(data_keeper):
             + description_handlers
             + mark_handlers
             + unmark_handlers,
+
             data_keeper.SENDING: [
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),
                 MessageHandler(Filters.regex('^(Назад|Back)$'), program.back_to_sections),
             ]
             + description_handlers,
+
             data_keeper.SENDING_DESCRIPTION: [
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),
                 MessageHandler(Filters.regex('^(Назад|Back)$'), program.back_to_message),
             ]
             + mark_handlers
             + unmark_handlers,
+
             data_keeper.DAYS: [
                 MessageHandler(
                     Filters.regex('^(24 сентября|25 сентября|24 September|25 September)$'),
@@ -114,22 +125,26 @@ def create_coversation_handler(data_keeper):
                 ),
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),
             ],
+
             data_keeper.TIME: [
                 MessageHandler(Filters.regex(all_times_regex), program_time.choose_time),
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),
                 MessageHandler(Filters.regex('^(Назад|Back)$'), days.back_to_days),
             ],
+
             data_keeper.SENDING_TIME: [
                 MessageHandler(Filters.regex('^(Назад|Back)$'), program_time.back_to_time),
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),
             ]
             + description_handlers,
+
             data_keeper.SENDING_DESCRIPTION_TIME: [
                 MessageHandler(Filters.regex('^(Назад|Back)$'), program_time.back_to_message_time),
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),
             ]
             + mark_handlers
             + unmark_handlers,
+
             data_keeper.SECTION: [
                 MessageHandler(
                     Filters.regex('^(Пленарная секция|Plenary session)$'), program.send_data

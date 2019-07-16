@@ -78,3 +78,11 @@ def times_keyboard(context: CallbackContext):
     keyboard.extend(back_to_begin_keyboard(context))
 
     return keyboard
+
+
+def conflicts_to_begin_keyboard(context: CallbackContext):
+    return [
+        [context.user_data['localisation']['CONFLICTS']],
+        [context.user_data['localisation']['TOBEGINNING']],
+    ]
+

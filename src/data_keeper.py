@@ -25,6 +25,7 @@ class DataKeeper:
         self.TIME = 8
         self.FEEDBACK = 9
         self.MARKED = 10
+        self.INTERSECTIONS = 11
 
         # paths to data
         self.PROGRAM_PATH = '../program2018.pdf'

@@ -12,6 +12,7 @@ localisation_ru = {
     'GOODBYE': 'До свидания!',
     'FEEDBACKMESSAGE': 'Здесь можно оставить обратную связь для разработчиков бота:',
     'FEEDBACKTHANKYOU': 'Cпасибо, что помогаете сделать бота лучше!',
+    'CONFLICTMESSAGE': 'Эти доклады пересекаются по времени:',
     # BUTTONS
     'SHOWPROGRAM': 'Показать программу по секциям',
     'SHOWPROGRAMTIME': 'Показать программу по времени',
@@ -24,6 +25,7 @@ localisation_ru = {
     '25': '25 сентября',
     'FEEDBACK': 'Оставить фидбек',
     'MARKED': 'Отмеченные доклады',
+    'CONFLICTS': 'Пересечения',
     # SECTIONS
     'PLENARY': 'Пленарная секция',
     'RESEARCH': 'Исследовательская секция',
@@ -46,6 +48,7 @@ localisation_en = {
     'WRONG': "I don't understand you",
     'FEEDBACKMESSAGE': 'You can leave feedback for bot developers here:',
     'FEEDBACKTHANKYOU': 'Thank you for helping to make this bot better!',
+    'CONFLICTMESSAGE': 'This talks have time conflicts:',
     # BUTTONS
     'SHOWPROGRAM': 'Show the conference program',
     'SHOWPROGRAMTIME': 'Show program by time',
@@ -58,6 +61,7 @@ localisation_en = {
     '25': '25 September',
     'FEEDBACK': 'Leave feedback',
     'MARKED': 'Marked talks',
+    'CONFLICTS': 'Conflicts',
     # SECTIONS
     'PLENARY': 'Plenary session',
     'RESEARCH': 'Research Papers Session',
