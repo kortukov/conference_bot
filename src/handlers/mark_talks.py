@@ -118,7 +118,10 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
 
     elif context.user_data['type'] == 'marked':
         marked_list = context.user_data['marked_list']
-        reply_keyboard = keyboards.to_begin_keyboard(context)
+        if find_time_intersections(context):
+            reply_keyboard = keyboards.conflicts_to_begin_keyboard(context)
+        else:
+            reply_keyboard = keyboards.to_begin_keyboard(context)
         for marked_talk in marked_list:
             if context.user_data['lang'] == 'ru':
                 reply_message = marked_talk.str_ru()
@@ -198,6 +201,11 @@ def show_intersections(update: Update, context: CallbackContext):
     intersection_list = find_time_intersections(context)
     intersection_list.insert(0, context.user_data['localisation']['CONFLICTMESSAGE'])
 
+    if len(intersection_list) > 5:
+        context.user_data['intersection_list'] = intersection_list[5:]
+        reply_keyboard = keyboards.more_back_to_begin_keyboard(context)
+        intersection_list = intersection_list[:5]
+
     for intersection in intersection_list:
         update.message.reply_text(
             intersection,
@@ -208,6 +216,30 @@ def show_intersections(update: Update, context: CallbackContext):
         )
 
     return dk.INTERSECTIONS
+
+
+def show_more_intersections(update: Update, context: CallbackContext):
+    intersection_list = context.user_data.get('intersection_list', None)
+    logger.critical(context.user_data['intersection_list'])
+    reply_keyboard = keyboards.back_to_begin_keyboard(context)
+    if not intersection_list:
+        intersection_list = [context.user_data['localisation']['NOTFOUND']]
+    else:
+        if len(intersection_list) > 5:
+            context.user_data['intersection_list'] = intersection_list[5:]
+            reply_keyboard = keyboards.more_back_to_begin_keyboard(context)
+            intersection_list = intersection_list[:5]
+        else:
+            context.user_data['intersection_list'] = []
+
+    for intersection in intersection_list:
+        update.message.reply_text(
+            intersection,
+            parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
+            reply_markup=ReplyKeyboardMarkup(
+                reply_keyboard, one_time_keyboard=True, resize_keyboard=True
+            ),
+        )
 
 
 def find_time_intersections(context: CallbackContext):
@@ -225,12 +257,12 @@ def find_time_intersections(context: CallbackContext):
 
 def check_talks_for_intersection(talk_1, talk_2):
     if talk_1.ts_begin < talk_2.ts_begin:
-        if talk_1.ts_end < talk_2.ts_begin:
+        if talk_1.ts_end <= talk_2.ts_begin:
             return False
         else:
             return True
     else:
-        if talk_1.ts_begin > talk_2.ts_end:
+        if talk_1.ts_begin >= talk_2.ts_end:
             return False
         else:
             return True

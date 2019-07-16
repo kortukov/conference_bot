@@ -36,6 +36,15 @@ def more_to_begin_keyboard(context: CallbackContext):
     ]
 
 
+def more_back_to_begin_keyboard(context: CallbackContext):
+    return [
+        [context.user_data['localisation']['MORE']],
+        [context.user_data['localisation']['BACK']],
+        [context.user_data['localisation']['TOBEGINNING']],
+    ]
+
+
+
 def days_keyboard(context: CallbackContext):
     keyboard = [
         [context.user_data['localisation']['24']],

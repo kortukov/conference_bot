@@ -86,6 +86,9 @@ def create_coversation_handler(data_keeper):
             + unmark_handlers,
 
             data_keeper.INTERSECTIONS: [
+                MessageHandler(
+                    Filters.regex('^(Ещё результаты|More results)$'), mark_talks.show_more_intersections
+                ),
                 MessageHandler(Filters.regex('^(Назад|Back)$'), mark_talks.back_to_marked),
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning)
             ],
