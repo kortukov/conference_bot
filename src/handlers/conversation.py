@@ -45,6 +45,19 @@ def create_coversation_handler(data_keeper):
                     CommandHandler(unmark_command, mark_talks.mark_and_unmark_talk)
                 )
 
+    notify_handlers = []
+    unnotify_handlers = []
+    for event in data_keeper.event_list:
+        if isinstance(event, FullEvent):
+            for talk in event.talks_list:
+                talk_number = talk.talk_number
+                notify_command = 'notify' + str(talk_number)
+                notify_handlers.append(CommandHandler(notify_command, mark_talks.notify_and_unnotify_talk))
+                unnotify_command = 'unnotify' + str(talk_number)
+                unnotify_handlers.append(
+                    CommandHandler(unnotify_command, mark_talks.notify_and_unnotify_talk)
+                )
+
     all_times_regex = helpers.create_all_times_regex()
 
     return ConversationHandler(
@@ -83,7 +96,9 @@ def create_coversation_handler(data_keeper):
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning)
             ]
             + mark_handlers
-            + unmark_handlers,
+            + unmark_handlers
+            + notify_handlers
+            + unnotify_handlers,
 
             data_keeper.INTERSECTIONS: [
                 MessageHandler(
@@ -106,7 +121,9 @@ def create_coversation_handler(data_keeper):
             ]
             + description_handlers
             + mark_handlers
-            + unmark_handlers,
+            + unmark_handlers
+            + notify_handlers
+            + unnotify_handlers,
 
             data_keeper.SENDING: [
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),
@@ -119,7 +136,9 @@ def create_coversation_handler(data_keeper):
                 MessageHandler(Filters.regex('^(Назад|Back)$'), program.back_to_message),
             ]
             + mark_handlers
-            + unmark_handlers,
+            + unmark_handlers
+            + notify_handlers
+            + unnotify_handlers,
 
             data_keeper.DAYS: [
                 MessageHandler(
@@ -146,7 +165,9 @@ def create_coversation_handler(data_keeper):
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),
             ]
             + mark_handlers
-            + unmark_handlers,
+            + unmark_handlers
+            + notify_handlers
+            + unnotify_handlers,
 
             data_keeper.SECTION: [
                 MessageHandler(

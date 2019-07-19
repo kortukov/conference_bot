@@ -34,6 +34,9 @@ def beginning(update: Update, context: CallbackContext):
     if 'marked_list' not in context.user_data:
         context.user_data['marked_list'] = []
 
+    if 'notified_list' not in context.user_data:
+        context.user_data['notified_list'] = []
+
     if 'event_list' not in context.user_data:
         context.user_data['event_list'] = dk.event_list
 

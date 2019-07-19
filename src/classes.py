@@ -204,13 +204,14 @@ class OtherFull(FullEvent):
 
 
 class Talk:
-    def __init__(self, title, authors, speaker, hall, talk_number, is_marked=False):
+    def __init__(self, title, authors, speaker, hall, talk_number, is_marked=False, notified=False):
         self.title = title
         self.authors = authors
         self.speaker = speaker
         self._hall = hall
         self.talk_number = talk_number
         self.is_marked = is_marked
+        self.notified = notified
         self.ts_begin = None
         self.ts_end = None
 
@@ -238,6 +239,13 @@ class Talk:
             else:
                 result = result + 'Убрать отметку: /unmark' + str(self.talk_number) + '\n'
 
+                if not self.notified:
+                    result = result + 'Поставить уведомление: /notify' + str(self.talk_number) + '\n'
+                else:
+                    result = result + 'Убрать уведомление: /unnotify' + str(self.talk_number) + '\n'
+
+
+
         return result
 
     def str_en(self, short=False):
@@ -255,6 +263,13 @@ class Talk:
                 result = result + 'Mark talk: /mark' + str(self.talk_number) + '\n'
             else:
                 result = result + 'Remove mark: /unmark' + str(self.talk_number) + '\n'
+
+                if not self.notified:
+                    result = result + 'Notify: /notify' + str(self.talk_number) + '\n'
+                else:
+                    result = result + 'Remove notification: /unnotify' + str(self.talk_number) + '\n'
+
+
 
         return result
 
