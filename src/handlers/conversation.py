@@ -92,7 +92,7 @@ def create_coversation_handler(data_keeper):
             ],
 
             data_keeper.MARKED: [
-                MessageHandler(Filters.regex('^(Пересечения|Сonflicts)'), mark_talks.show_intersections),
+                MessageHandler(Filters.regex('^(Пересечения|Conflicts)'), mark_talks.show_intersections),
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning)
             ]
             + mark_handlers

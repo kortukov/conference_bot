@@ -2,6 +2,7 @@ import pickle
 
 
 PICKLE_PATH = '../event_list.pickle'
+NOTIFICATIONS_PATH = '../notifications.pickle'
 
 
 class DataKeeper:
@@ -12,6 +13,13 @@ class DataKeeper:
     def __init__(self):
         with open(PICKLE_PATH, 'rb') as f:
             self.event_list = pickle.load(f)
+
+        try:
+            f = open(NOTIFICATIONS_PATH, 'rb')
+            self.notifications = pickle.load(f)
+        except Exception:
+            self.notifications = {}
+
 
         # conversation state constants
         self.MENU = 0
@@ -29,3 +37,7 @@ class DataKeeper:
 
         # paths to data
         self.PROGRAM_PATH = '../program2018.pdf'
+
+    def save_notifications(self):
+        with open(NOTIFICATIONS_PATH, 'wb') as f:
+            pickle.dump(self.notifications, f, pickle.HIGHEST_PROTOCOL)

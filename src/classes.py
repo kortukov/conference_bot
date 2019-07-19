@@ -223,7 +223,10 @@ class Talk:
     def hall_en(self):
         return get_place(self._hall, eng=True)
 
-    def str_ru(self, short=False):
+    def __repr__(self):
+        return self.str_ru(True)
+
+    def str_ru(self, short=False, notification=False):
         result = "<b>" + self.title + '</b>\n'
         if self.authors:
             result = result + "Авторы:\n\t" + self.authors + '\n'
@@ -233,6 +236,10 @@ class Talk:
             result = result + self.get_datetime_ru()
         if self._hall and not short:
             result = result + "Зал: <b>" + self.hall_ru + '</b>\n'
+
+        if notification:
+            return result
+
         if self.talk_number:
             if not self.is_marked:  # marked
                 result = result + 'Отметить доклад: /mark' + str(self.talk_number) + '\n'
@@ -248,7 +255,7 @@ class Talk:
 
         return result
 
-    def str_en(self, short=False):
+    def str_en(self, short=False, notification=False):
         result = "<b>" + self.title + '</b>\n'
         if self.authors:
             result = result + "Authors:\n\t" + self.authors + '\n'
@@ -258,6 +265,10 @@ class Talk:
             result = result + self.get_datetime_en()
         if self._hall and not short:
             result = result + "Hall: <b>" + self.hall_en + '</b>\n'
+
+        if notification:
+            return result
+
         if self.talk_number:
             if not self.is_marked:  # marked
                 result = result + 'Mark talk: /mark' + str(self.talk_number) + '\n'

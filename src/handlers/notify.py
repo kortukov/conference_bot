@@ -51,6 +51,9 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
                             context.user_data['notified_list'].remove(talk_to_unnotify)
                             talk_to_unnotify.notified = False
 
+                    dk.notifications[update.message.chat_id] = context.user_data['notified_list']
+                    dk.save_notifications()
+
     # Sending previous message again, but updated
     if context.user_data['type'] == 'sections' or context.user_data['type'] == 'time':
         needed_description_number = context.user_data['description_number']
@@ -136,3 +139,16 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
             )
 
         return dk.MARKED
+
+
+def execute_notifications(context: CallbackContext):
+
+    for chat_id in dk.notifications:
+        notify_list = dk.notifications[chat_id]
+        if notify_list:
+            for talk in notify_list:
+                message = 'Через 10 минут доклад:\n\n' + talk.str_ru(notification=True)
+                context.bot.send_message(chat_id=chat_id, text=message, parse_mode=telegram.ParseMode.HTML)
+
+
+

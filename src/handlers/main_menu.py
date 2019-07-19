@@ -36,6 +36,8 @@ def beginning(update: Update, context: CallbackContext):
 
     if 'notified_list' not in context.user_data:
         context.user_data['notified_list'] = []
+        dk.notifications[update.message.chat_id] = []
+        dk.save_notifications()
 
     if 'event_list' not in context.user_data:
         context.user_data['event_list'] = dk.event_list
