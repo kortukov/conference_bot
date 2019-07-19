@@ -11,14 +11,14 @@ from telegram.ext import (
 
 from classes import FullEvent, Other
 import helpers
-from . import main_menu, feedback, search, program, days, program_time, mark_talks
+from . import main_menu, feedback, search, program, days, program_time, mark_talks, notify
 
 
 logger = logging.getLogger(__name__)
 
 
 def init_handler_modules(data_keeper):
-    for module in (main_menu, feedback, search, program, days, program_time, mark_talks, helpers):
+    for module in (main_menu, feedback, search, program, days, program_time, mark_talks, notify, helpers):
         module.init_module(data_keeper)
 
 
@@ -52,10 +52,10 @@ def create_coversation_handler(data_keeper):
             for talk in event.talks_list:
                 talk_number = talk.talk_number
                 notify_command = 'notify' + str(talk_number)
-                notify_handlers.append(CommandHandler(notify_command, mark_talks.notify_and_unnotify_talk))
+                notify_handlers.append(CommandHandler(notify_command, notify.notify_and_unnotify_talk))
                 unnotify_command = 'unnotify' + str(talk_number)
                 unnotify_handlers.append(
-                    CommandHandler(unnotify_command, mark_talks.notify_and_unnotify_talk)
+                    CommandHandler(unnotify_command, notify.notify_and_unnotify_talk)
                 )
 
     all_times_regex = helpers.create_all_times_regex()
