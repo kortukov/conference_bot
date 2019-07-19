@@ -30,7 +30,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
     )
 
     needed_number = int(message.split('k')[-1])  # markN
-    for event in dk.event_list:
+    for event in context.user_data['event_list']:
         if isinstance(event, FullEvent):
             for talk in event.talks_list:
                 if needed_number == talk.talk_number:
@@ -56,7 +56,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
         event = next(
             (
                 ev
-                for ev in dk.event_list
+                for ev in context.user_data['event_list']
                 if (isinstance(ev, FullEvent) or isinstance(ev, Other))
                 and ev.number == needed_description_number
             ),
@@ -90,7 +90,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                 needed_talk = next(
                     (
                         talk
-                        for event in dk.event_list
+                        for event in context.user_data['event_list']
                         if isinstance(event, FullEvent)
                         for talk in event.talks_list
                         if talk.talk_number == needed_number

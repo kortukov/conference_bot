@@ -72,7 +72,7 @@ def choose_time(update: Update, context: CallbackContext):
     # Здесь уже пора выдавать данные
     events = (
         event
-        for event in dk.event_list
+        for event in context.user_data['event_list']
         if datetime.fromtimestamp(event.ts_begin).day == day
         and ts_begin == event.ts_begin
         or ts_end == event.ts_end

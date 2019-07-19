@@ -47,7 +47,7 @@ def perform_search(update: Update, context: CallbackContext):
     context.user_data['reply_messages'] = []
     reply_keyboard = keyboards.to_begin_keyboard(context)
     reply_messages = []
-    for event in dk.event_list:
+    for event in context.user_data['event_list']:
         if isinstance(event, FullEvent):
             if message in event.full_str_ru().lower():
                 if message in event.str_ru().lower():

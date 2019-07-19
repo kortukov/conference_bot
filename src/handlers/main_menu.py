@@ -34,6 +34,9 @@ def beginning(update: Update, context: CallbackContext):
     if 'marked_list' not in context.user_data:
         context.user_data['marked_list'] = []
 
+    if 'event_list' not in context.user_data:
+        context.user_data['event_list'] = dk.event_list
+
     reply_keyboard = keyboards.main_menu_keyboard(context)
 
     update.message.reply_text(
