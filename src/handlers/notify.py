@@ -30,6 +30,9 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
         message,
     )
 
+    notification_added = False
+    title_to_notify = ''
+
     needed_number = int(message.split('y')[-1])  # notifyN
     for event in context.user_data['event_list']:
         if isinstance(event, FullEvent):
@@ -38,6 +41,8 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
                     if not talk.notified:
                         talk.notified = True
                         context.user_data['notified_list'].append(talk)
+                        notification_added = True
+                        title_to_notify = talk.title
                     else:
                         talk_to_unnotify = next(
                             (
@@ -74,13 +79,19 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
             reply_message += (event.full_str_en()) + '\n'
         reply_keyboard = keyboards.back_to_begin_keyboard(context)
 
-        update.message.reply_text(
-            reply_message,
-            parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
-            reply_markup=ReplyKeyboardMarkup(
-                reply_keyboard, one_time_keyboard=True, resize_keyboard=True
-            ),
-        )
+        if notification_added:
+            added_message = context.user_data['localisation']['NOTIFICATIONADDED'] + '\n' + title_to_notify
+        else:
+            added_message = context.user_data['localisation']['NOTIFICATIONREMOVED']
+
+        for message in (reply_message, added_message):
+            update.message.reply_text(
+                message,
+                parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
+                reply_markup=ReplyKeyboardMarkup(
+                    reply_keyboard, one_time_keyboard=True, resize_keyboard=True
+                ),
+            )
         if context.user_data['type'] == 'sections':
             return dk.SENDING_DESCRIPTION
         elif context.user_data['type'] == 'time':
@@ -105,6 +116,18 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
                     reply_messages[i] = needed_talk.str_ru() if needed_talk else ""
                 else:
                     reply_messages[i] = needed_talk.str_en() if needed_talk else ""
+
+        # dirty workaround to remove previous messages
+        reply_messages = [
+            message for message in reply_messages
+            if context.user_data['localisation']['NOTIFICATIONADDED'] not in message
+            and context.user_data['localisation']['NOTIFICATIONREMOVED'] not in message
+        ]
+
+        if notification_added:
+            reply_messages.append(context.user_data['localisation']['NOTIFICATIONADDED'] + '\n' + title_to_notify)
+        else:
+            reply_messages.append(context.user_data['localisation']['NOTIFICATIONREMOVED'])
 
         reply_keyboard = keyboards.to_begin_keyboard(context)
 
@@ -137,6 +160,19 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
                     reply_keyboard, one_time_keyboard=True, resize_keyboard=True
                 ),
             )
+
+        if notification_added:
+            reply_message = context.user_data['localisation']['NOTIFICATIONADDED'] + '\n' + title_to_notify
+        else:
+            reply_message = context.user_data['localisation']['NOTIFICATIONREMOVED']
+
+        update.message.reply_text(
+            reply_message,
+            parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
+            reply_markup=ReplyKeyboardMarkup(
+                reply_keyboard, one_time_keyboard=True, resize_keyboard=True
+            ),
+        )
 
         return dk.MARKED
 

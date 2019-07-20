@@ -13,6 +13,8 @@ localisation_ru = {
     'FEEDBACKMESSAGE': 'Здесь можно оставить обратную связь для разработчиков бота:',
     'FEEDBACKTHANKYOU': 'Cпасибо, что помогаете сделать бота лучше!',
     'CONFLICTMESSAGE': 'Эти доклады пересекаются по времени:',
+    'NOTIFICATIONADDED': '<b>Вам придёт сообщение за десять минут до доклада:</b>\n',
+    'NOTIFICATIONREMOVED': '<b>Уведомление отменено.</b>',
     # BUTTONS
     'SHOWPROGRAM': 'Показать программу по секциям',
     'SHOWPROGRAMTIME': 'Показать программу по времени',
@@ -49,6 +51,9 @@ localisation_en = {
     'FEEDBACKMESSAGE': 'You can leave feedback for bot developers here:',
     'FEEDBACKTHANKYOU': 'Thank you for helping to make this bot better!',
     'CONFLICTMESSAGE': 'This talks have time conflicts:',
+    'NOTIFICATIONADDED': '<b>You will recieve a message 10 minutes before the talk:</b>\n',
+    'NOTIFICATIONREMOVED': '<b>Notification cancelled</b>.',
+
     # BUTTONS
     'SHOWPROGRAM': 'Show the conference program',
     'SHOWPROGRAMTIME': 'Show program by time',
