@@ -18,7 +18,7 @@ localisation_ru = {
     # BUTTONS
     'SHOWPROGRAM': 'Показать программу по секциям',
     'SHOWPROGRAMTIME': 'Показать программу по времени',
-    'SENDPROGRAM': 'Прислать программу в PDF',
+    'SENDPROGRAM': 'Программа в PDF',
     'SEARCHPROGRAM': 'Найти доклад или автора',
     'LANGUAGE': 'English',
     'TOBEGINNING': 'В начало',
@@ -57,7 +57,7 @@ localisation_en = {
     # BUTTONS
     'SHOWPROGRAM': 'Show the conference program',
     'SHOWPROGRAMTIME': 'Show program by time',
-    'SENDPROGRAM': 'Send the program as PDF',
+    'SENDPROGRAM': 'PDF program',
     'SEARCHPROGRAM': 'Find presentation or speaker',
     'LANGUAGE': 'Русский',
     'TOBEGINNING': 'To beginning',

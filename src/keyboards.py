@@ -2,18 +2,18 @@ from telegram.ext import CallbackContext
 
 import helpers
 
+
 def main_menu_keyboard(context: CallbackContext):
     keyboard = [
         [context.user_data['localisation']['SHOWPROGRAM']],
         [context.user_data['localisation']['SHOWPROGRAMTIME']],
         [context.user_data['localisation']['SEARCHPROGRAM']],
-        [context.user_data['localisation']['SENDPROGRAM']],
+        [context.user_data['localisation']['SENDPROGRAM'], context.user_data['localisation']['FEEDBACK']],
         [context.user_data['localisation']['LANGUAGE']],
-        [context.user_data['localisation']['FEEDBACK']],
     ]
 
     if len(context.user_data['marked_list']) != 0:
-        keyboard.append([context.user_data['localisation']['MARKED']])
+        keyboard.insert(3,[context.user_data['localisation']['MARKED']])
 
     return keyboard
 

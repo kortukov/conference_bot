@@ -78,7 +78,7 @@ def create_coversation_handler(data_keeper):
                     search.search_program,
                 ),
                 MessageHandler(
-                    Filters.regex('^(Прислать программу в PDF|Send the program as PDF)$'),
+                    Filters.regex('^(Программа в PDF|PDF program)$'),
                     main_menu.send_pdf,
                 ),
                 MessageHandler(Filters.regex('^(English|Русский)$'), main_menu.change_lang),
