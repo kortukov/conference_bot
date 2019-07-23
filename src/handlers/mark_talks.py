@@ -259,20 +259,37 @@ def show_more_intersections(update: Update, context: CallbackContext):
 
 def find_time_intersections(context: CallbackContext):
     talks_list = context.user_data['marked_list']
-    intersection_list = []
-    for i in range(len(talks_list) - 1):
-        for j in range(i + 1, len(talks_list)):
-            talk_1 = talks_list[i]
+    intersection_global_list = []
+
+    for i in range(len(talks_list)):
+        intersection_set = set()
+        talk_1 = talks_list[i]
+
+        for j in range(len(talks_list)):
+            if i <= j:
+                continue
             talk_2 = talks_list[j]
             if check_talks_for_intersection(talk_1, talk_2):
-                if context.user_data['lang'] == 'ru':
-                    intersection = talk_1.intersect_str(talk_2, eng=False)
-                else:
-                    intersection = talk_2.intersect_str(talk_2, eng=True)
+                intersection_set.add(talk_2)
 
-                intersection_list.append(intersection)
+        if intersection_set:
+            intersection_set.add(talk_1)
+            intersection_global_list.append(intersection_set)
 
-    return intersection_list
+    intersection_global_set = set(tuple(int_set) for int_set in intersection_global_list)
+
+    if context.user_data['lang'] == 'ru':
+        intersection_global_list = [
+            ''.join(talk.intersect_str(eng=False) for talk in int_tuple)
+            for int_tuple in intersection_global_set
+        ]
+    else:
+        intersection_global_list = [
+            ''.join(talk.intersect_str(eng=False) for talk in int_tuple)
+            for int_tuple in intersection_global_set
+        ]
+
+    return intersection_global_list
 
 
 def check_talks_for_intersection(talk_1, talk_2):

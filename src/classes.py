@@ -308,7 +308,7 @@ class Talk:
         )
         return result
 
-    def intersect_str(self, talk_2, eng=False):
+    def intersect_str(self, eng=False):
         if eng:
             return (
                 self.get_datetime_en()
@@ -316,10 +316,6 @@ class Talk:
                 + ' <b>'
                 + self.hall_en
                 + '</b>\n----\n'
-                + talk_2.title
-                + ' <b>'
-                + talk_2.hall_en
-                + '</b>\n'
             )
         else:
             return (
@@ -328,8 +324,4 @@ class Talk:
                 + ' <b>'
                 + self.hall_ru
                 + '</b>\n----\n'
-                + talk_2.title
-                + ' <b>'
-                + talk_2.hall_ru
-                + '</b>\n'
             )
