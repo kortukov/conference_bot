@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 import telegram
 from telegram import ReplyKeyboardMarkup, Update
@@ -259,34 +260,71 @@ def show_more_intersections(update: Update, context: CallbackContext):
 
 def find_time_intersections(context: CallbackContext):
     talks_list = context.user_data['marked_list']
-    intersection_global_list = []
 
-    for i in range(len(talks_list)):
-        intersection_set = set()
-        talk_1 = talks_list[i]
+    # create time points
+    ts_list = []
+    max_len = 0
+    for talk in talks_list:
+        ts_list.append(talk.ts_begin)
+        ts_list.append(talk.ts_end)
+        max_len = max(talk.ts_end - talk.ts_begin, max_len)
 
-        for j in range(len(talks_list)):
-            if i <= j:
+    marked_begin = min(ts_list)
+    marked_end = max(ts_list)
+
+    time_points = [marked_begin]
+    point = marked_begin + max_len
+    while point < marked_end:
+        time_points.append(point)
+        point += max_len
+    time_points.append(marked_end)
+
+    # create list of intersecting talks in every timeslot
+    timeslots_list = []
+
+    for i in range(len(time_points) - 1):
+        begin = time_points[i]
+        end = time_points[i + 1]
+
+        talks_in_this_slot = [
+            talk for talk in talks_list if check_for_intersections_with_times(talk, begin, end)
+        ]
+
+        if len(talks_in_this_slot) > 1:
+            timeslots_list.append(talks_in_this_slot)
+
+    # remove duplicates
+    timeslots_list = list(set(tuple(slot) for slot in timeslots_list))
+    # remove lists that are included in other
+
+    slots_to_delete = set()
+    for i in range(len(timeslots_list) - 1):
+        slot1 = timeslots_list[i]
+        for j in range(i+1, len(timeslots_list)):
+            slot2 = timeslots_list[j]
+
+            if all(talk in slot2 for talk in slot1):
+                slots_to_delete.add(slot1)
                 continue
-            talk_2 = talks_list[j]
-            if check_talks_for_intersection(talk_1, talk_2):
-                intersection_set.add(talk_2)
 
-        if intersection_set:
-            intersection_set.add(talk_1)
-            intersection_global_list.append(intersection_set)
+            if all(talk in slot1 for talk in slot2):
+                slots_to_delete.add(slot2)
+                continue
 
-    intersection_global_set = set(tuple(int_set) for int_set in intersection_global_list)
+    timeslots_list = [slot for slot in timeslots_list if slot not in slots_to_delete]
+
+    # sort by time
+    timeslots_list = sorted(timeslots_list, key= lambda x: x[0].ts_begin)
 
     if context.user_data['lang'] == 'ru':
         intersection_global_list = [
-            ''.join(talk.intersect_str(eng=False) for talk in int_tuple)
-            for int_tuple in intersection_global_set
+            ''.join(talk.intersect_str(eng=False) for talk in intersections)
+            for intersections in timeslots_list
         ]
     else:
         intersection_global_list = [
-            ''.join(talk.intersect_str(eng=False) for talk in int_tuple)
-            for int_tuple in intersection_global_set
+            ''.join(talk.intersect_str(eng=False) for talk in intersections)
+            for intersections in timeslots_list
         ]
 
     return intersection_global_list
@@ -300,6 +338,19 @@ def check_talks_for_intersection(talk_1, talk_2):
             return True
     else:
         if talk_1.ts_begin >= talk_2.ts_end:
+            return False
+        else:
+            return True
+
+
+def check_for_intersections_with_times(talk, ts1, ts2):
+    if talk.ts_begin < ts1:
+        if talk.ts_end <= ts1:
+            return False
+        else:
+            return True
+    else:
+        if talk.ts_begin >= ts2:
             return False
         else:
             return True
