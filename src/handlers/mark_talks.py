@@ -19,7 +19,6 @@ def init_module(data_keeper):
 
 
 def mark_and_unmark_talk(update: Update, context: CallbackContext):
-    day = context.user_data['day']
     message = update.message.text
     user = update.message.from_user
     logger.info(
@@ -63,11 +62,13 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                             context.user_data['notified_list'].remove(talk_to_unnotify)
                             talk_to_unnotify.notified = False
 
-                    dk.notifications[update.message.chat_id] = context.user_data['notified_list']
-                    dk.save_marked_list()
+                    dk.update_marks_and_notifications(
+                        update.message.chat_id, context.user_data['marked_list']
+                    )
 
     # Sending previous message again, but updated
     if context.user_data['type'] == 'sections' or context.user_data['type'] == 'time':
+        day = context.user_data['day']
         needed_description_number = context.user_data['description_number']
         event = next(
             (
@@ -265,16 +266,13 @@ def find_time_intersections(context: CallbackContext):
     time_points = [talk.ts_begin + 60 for talk in talks_list]
     # 600 sec = 10 min
 
-
     # create list of intersecting talks in every timepoint
     timepoint_list = []
     talks_already_accounted = set()
     for i in range(len(time_points)):
         point = time_points[i]
 
-        talks_at_this_point = [
-            talk for talk in talks_list if talk_at_this_time(talk, point)
-        ]
+        talks_at_this_point = [talk for talk in talks_list if talk_at_this_time(talk, point)]
 
         if len(talks_at_this_point) <= 1:
             continue

@@ -19,7 +19,6 @@ def init_module(data_keeper):
 
 
 def notify_and_unnotify_talk(update: Update, context: CallbackContext):
-    day = context.user_data['day']
     message = update.message.text
     user = update.message.from_user
     logger.info(
@@ -56,11 +55,13 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
                             context.user_data['notified_list'].remove(talk_to_unnotify)
                             talk_to_unnotify.notified = False
 
-                    dk.notifications[update.message.chat_id] = context.user_data['notified_list']
-                    dk.save_marked_list()
+                    dk.update_marks_and_notifications(
+                        update.message.chat_id, context.user_data['marked_list']
+                    )
 
     # Sending previous message again, but updated
     if context.user_data['type'] == 'sections' or context.user_data['type'] == 'time':
+        day = context.user_data['day']
         needed_description_number = context.user_data['description_number']
         event = next(
             (
