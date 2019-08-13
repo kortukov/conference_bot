@@ -64,7 +64,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                             talk_to_unnotify.notified = False
 
                     dk.notifications[update.message.chat_id] = context.user_data['notified_list']
-                    dk.save_notifications()
+                    dk.save_marked_list()
 
     # Sending previous message again, but updated
     if context.user_data['type'] == 'sections' or context.user_data['type'] == 'time':

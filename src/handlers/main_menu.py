@@ -32,12 +32,12 @@ def beginning(update: Update, context: CallbackContext):
         context.user_data['localisation'] = languages.localisation_ru
 
     if 'marked_list' not in context.user_data:
-        context.user_data['marked_list'] = []
+        context.user_data['marked_list'] = dk.global_marked_list.get(update.message.chat_id, [])
 
     if 'notified_list' not in context.user_data:
         context.user_data['notified_list'] = []
         dk.notifications[update.message.chat_id] = []
-        dk.save_notifications()
+        dk.save_marked_list()
 
     if 'event_list' not in context.user_data:
         context.user_data['event_list'] = dk.event_list

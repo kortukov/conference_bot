@@ -2,7 +2,7 @@ import pickle
 
 
 PICKLE_PATH = '../event_list.pickle'
-NOTIFICATIONS_PATH = '../notifications.pickle'
+GLOBAL_MARKED_PATH = '../global_marked_list.pickle'
 
 
 class DataKeeper:
@@ -14,7 +14,7 @@ class DataKeeper:
         with open(PICKLE_PATH, 'rb') as f:
             self.event_list = pickle.load(f)
 
-        self.notifications = self.load_marked_list()
+        self.global_marked_list = self.load_marked_list()
 
         # conversation state constants
         self.MENU = 0
@@ -35,12 +35,12 @@ class DataKeeper:
 
     def load_marked_list(self):
         try:
-            f = open(NOTIFICATIONS_PATH, 'rb')
-            notifications = pickle.load(f)
+            f = open(GLOBAL_MARKED_PATH, 'rb')
+            global_marked_list = pickle.load(f)
         except Exception:
-            notifications = {}
-        return notifications
+            global_marked_list = {}
+        return global_marked_list
 
-    def save_notifications(self):
-        with open(NOTIFICATIONS_PATH, 'wb') as f:
-            pickle.dump(self.notifications, f, pickle.HIGHEST_PROTOCOL)
+    def save_marked_list(self):
+        with open(GLOBAL_MARKED_PATH, 'wb') as f:
+            pickle.dump(self.global_marked_list, f, pickle.HIGHEST_PROTOCOL)
