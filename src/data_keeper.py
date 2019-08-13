@@ -14,12 +14,7 @@ class DataKeeper:
         with open(PICKLE_PATH, 'rb') as f:
             self.event_list = pickle.load(f)
 
-        try:
-            f = open(NOTIFICATIONS_PATH, 'rb')
-            self.notifications = pickle.load(f)
-        except Exception:
-            self.notifications = {}
-
+        self.notifications = self.load_marked_list()
 
         # conversation state constants
         self.MENU = 0
@@ -37,6 +32,14 @@ class DataKeeper:
 
         # paths to data
         self.PROGRAM_PATH = '../program2018.pdf'
+
+    def load_marked_list(self):
+        try:
+            f = open(NOTIFICATIONS_PATH, 'rb')
+            notifications = pickle.load(f)
+        except Exception:
+            notifications = {}
+        return notifications
 
     def save_notifications(self):
         with open(NOTIFICATIONS_PATH, 'wb') as f:

@@ -262,21 +262,9 @@ def find_time_intersections(context: CallbackContext):
     talks_list = context.user_data['marked_list']
 
     # create time points
-    ts_list = []
-    for talk in talks_list:
-        ts_list.append(talk.ts_begin)
-        ts_list.append(talk.ts_end)
-
-    marked_begin = min(ts_list)
-    marked_end = max(ts_list)
-
-    time_points = [marked_begin]
+    time_points = [talk.ts_begin + 60 for talk in talks_list]
     # 600 sec = 10 min
-    point = marked_begin + 600
-    while point < marked_end:
-        time_points.append(point)
-        point += 600
-    time_points.append(marked_end)
+
 
     # create list of intersecting talks in every timepoint
     timepoint_list = []
@@ -344,4 +332,3 @@ def talk_at_this_time(talk, ts):
         return True
     else:
         return False
-    
