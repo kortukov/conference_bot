@@ -61,6 +61,21 @@ class BaseEvent(object):
             + str(self.title_en)
         )
 
+    def __eq__(self, other):
+        if type(other) != type(self):
+            return False
+
+        if (
+            self.title_ru == other.title_ru
+            and self.title_en == other.title_en
+            and self.place_id == other.place_id
+            and self.ts_begin == other.ts_begin
+            and self.ts_end == other.ts_end
+        ):
+            return True
+        else:
+            return False
+
     def str_ru(self):
         return (
             "Время: "
@@ -145,6 +160,26 @@ class FullEvent(BaseEvent):
     def __str__(self):
         return super().__str__()
 
+    def __eq__(self, other):
+        if type(other) != type(self):
+            return False
+
+        if (
+                self.title_ru == other.title_ru
+                and self.title_en == other.title_en
+                and self.place_id == other.place_id
+                and self.ts_begin == other.ts_begin
+                and self.ts_end == other.ts_end
+        ):
+            if len(self.talks_list) != len(other.talks_list):
+                return False
+            for this_talk, other_talk in zip(self.talks_list, other.talks_list):
+                if this_talk != other_talk:
+                    return False
+            return True
+        else:
+            return False
+
     def full_str_ru(self):
         result = super().str_ru() + '\n\n'
         for talk in self.talks_list:
@@ -226,6 +261,19 @@ class Talk:
     def __repr__(self):
         return self.str_ru(True)
 
+    def __eq__(self, other):
+        if (
+                self.title == other.title
+                and self.authors == other.authors
+                and self.speaker == other.speaker
+                and self._hall == other._hall
+                and self.ts_begin == other.ts_begin
+                and self.ts_end == other.ts_end
+        ):
+            return True
+        else:
+            return False
+
     def str_ru(self, short=False, notification=False):
         result = "<b>" + self.title + '</b>\n'
         if self.authors:
@@ -247,11 +295,11 @@ class Talk:
                 result = result + 'Убрать отметку: /unmark' + str(self.talk_number) + '\n'
 
                 if not self.notified:
-                    result = result + 'Поставить уведомление: /notify' + str(self.talk_number) + '\n'
+                    result = (
+                        result + 'Поставить уведомление: /notify' + str(self.talk_number) + '\n'
+                    )
                 else:
                     result = result + 'Убрать уведомление: /unnotify' + str(self.talk_number) + '\n'
-
-
 
         return result
 
@@ -278,9 +326,9 @@ class Talk:
                 if not self.notified:
                     result = result + 'Notify: /notify' + str(self.talk_number) + '\n'
                 else:
-                    result = result + 'Remove notification: /unnotify' + str(self.talk_number) + '\n'
-
-
+                    result = (
+                        result + 'Remove notification: /unnotify' + str(self.talk_number) + '\n'
+                    )
 
         return result
 
@@ -310,18 +358,6 @@ class Talk:
 
     def intersect_str(self, eng=False):
         if eng:
-            return (
-                self.get_datetime_en()
-                + self.title
-                + ' <b>'
-                + self.hall_en
-                + '</b>\n----\n'
-            )
+            return self.get_datetime_en() + self.title + ' <b>' + self.hall_en + '</b>\n----\n'
         else:
-            return (
-                self.get_datetime_ru()
-                + self.title
-                + ' <b>'
-                + self.hall_ru
-                + '</b>\n----\n'
-            )
+            return self.get_datetime_ru() + self.title + ' <b>' + self.hall_ru + '</b>\n----\n'

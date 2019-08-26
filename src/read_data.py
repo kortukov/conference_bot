@@ -26,10 +26,9 @@ def get_timestamp(date, hours, minutes):
     return time.mktime(dt.timetuple())
 
 
-class ProgramParser():
+class ProgramParser:
     def __init__(self):
         pass
-
 
     @staticmethod
     def get_place_id(string):
@@ -68,7 +67,6 @@ class ProgramParser():
                 return places[word]
         return -1
 
-
     def parse_program(self, program_path):
         document = Document(program_path)
         doc_length = len(document.paragraphs)
@@ -96,7 +94,9 @@ class ProgramParser():
             begin = current_time.split('-')[0]
             end = current_time.split('-')[1]
 
-            ts_begin = get_timestamp(current_date, int(begin.split(':')[0]), int(begin.split(':')[1]))
+            ts_begin = get_timestamp(
+                current_date, int(begin.split(':')[0]), int(begin.split(':')[1])
+            )
             ts_end = get_timestamp(current_date, int(end.split(':')[0]), int(end.split(':')[1]))
 
             title_ru = document.paragraphs[i + 2].text.split("//")[0]
@@ -112,7 +112,9 @@ class ProgramParser():
                 event = Food(ts_begin, ts_end, current_place, title_ru, title_en)
 
             elif "Plenary" in title_en:
-                event = Plenary(ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter)
+                event = Plenary(
+                    ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter
+                )
                 full_event_counter += 1
 
             elif "Research" in title_en:
@@ -122,11 +124,15 @@ class ProgramParser():
                 full_event_counter += 1
 
             elif "Student" in title_en:
-                event = Young(ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter)
+                event = Young(
+                    ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter
+                )
                 full_event_counter += 1
 
             elif "Awards" in title_en:
-                event = Other(ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter)
+                event = Other(
+                    ts_begin, ts_end, current_place, title_ru, title_en, full_event_counter
+                )
                 full_event_counter += 1
 
             else:
@@ -183,11 +189,13 @@ class ProgramParser():
                             k = k + 1
 
                         event.talks_list.append(
-                            Talk(title=current_talk,
-                                 authors=current_authors,
-                                 speaker=current_speaker,
-                                 hall=current_place,
-                                 talk_number=talks_counter)
+                            Talk(
+                                title=current_talk,
+                                authors=current_authors,
+                                speaker=current_speaker,
+                                hall=current_place,
+                                talk_number=talks_counter,
+                            )
                         )
                         talks_counter += 1
 

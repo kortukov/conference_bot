@@ -1,3 +1,4 @@
+import copy
 import pickle
 
 from classes import FullEvent
@@ -54,7 +55,7 @@ class DataKeeper:
             pickle.dump(self.marks_and_notifications, f, pickle.HIGHEST_PROTOCOL)
 
     def create_user_event_list(self, user_id):
-        user_event_list = self.event_list
+        user_event_list = copy.deepcopy(self.event_list)
         user_marks_and_notifications = self.marks_and_notifications.get(user_id, [])
 
         marked_notified_dict = {mn[0]: mn[1] for mn in user_marks_and_notifications}
@@ -64,7 +65,34 @@ class DataKeeper:
 
                     if talk.title in marked_notified_dict:
                         talk.is_marked = True
-                        if marked_notified_dict[talk.title]:
-                            talk.notified = True
+
 
         return user_event_list
+
+    def create_user_marked_list(self, user_id, user_event_list):
+        marked_list = []
+        user_marks_and_notifications = self.marks_and_notifications.get(user_id, [])
+
+        marked_notified_dict = {mn[0]: mn[1] for mn in user_marks_and_notifications}
+        for event in user_event_list:
+            if isinstance(event, FullEvent):
+                for talk in event.talks_list:
+
+                    if talk.title in marked_notified_dict:
+                        talk.is_marked = True
+                        marked_list.append(talk)
+
+        return marked_list
+
+    def create_user_notified_list(self, user_id, user_marked_list):
+        notified_list = []
+        user_marks_and_notifications = self.marks_and_notifications.get(user_id, [])
+
+        marked_notified_dict = {mn[0]: mn[1] for mn in user_marks_and_notifications}
+        for talk in user_marked_list:
+            if marked_notified_dict[talk.title]:
+                talk.notified = True
+                notified_list.append(talk)
+
+        return notified_list
+    

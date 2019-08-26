@@ -31,13 +31,9 @@ def beginning(update: Update, context: CallbackContext):
         context.user_data['event_list'] = dk.create_user_event_list(update.message.chat_id)
 
     if 'marked_list' not in context.user_data:
-        context.user_data['marked_list'] = [
-            talk
-            for event in context.user_data['event_list']
-            if isinstance(event, FullEvent)
-            for talk in event.talks_list
-            if talk.is_marked
-        ]
+        context.user_data['marked_list'] = dk.create_user_marked_list(
+            update.message.chat_id, context.user_data['event_list']
+        )
 
     if 'notified_list' not in context.user_data:
         context.user_data['notified_list'] = [
