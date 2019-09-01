@@ -1,4 +1,5 @@
 import logging
+from transliterate import translit
 
 import telegram
 from telegram import ReplyKeyboardMarkup, Update
@@ -44,13 +45,28 @@ def perform_search(update: Update, context: CallbackContext):
         message,
     )
 
+    # add transliteration
+    message_variants = {message}
+    try:
+        alt_message = translit(message, 'ru')
+        message_variants.add(alt_message)
+    except:
+        pass
+
+    try:
+        alt_message = translit(message, 'ru', reversed=True)
+        message_variants.add(alt_message)
+    except:
+        pass
+
+    logger.info('Searching for {}'.format(message_variants))
     context.user_data['reply_messages'] = []
     reply_keyboard = keyboards.to_begin_keyboard(context)
     reply_messages = []
     for event in context.user_data['event_list']:
         if isinstance(event, FullEvent):
-            if message in event.full_str_ru().lower():
-                if message in event.str_ru().lower():
+            if any(message in event.full_str_ru().lower() for message in message_variants):
+                if any(message in event.str_ru().lower() for message in message_variants):
                     reply = (
                         context.user_data['localisation'][str(event.get_date())]
                         + '\n'
@@ -68,7 +84,7 @@ def perform_search(update: Update, context: CallbackContext):
                 else:
                     for talk in event.talks_list:
                         for part in talk.__dict__.values():
-                            if message in str(part).lower():
+                            if any(message in str(part).lower() for message in message_variants):
                                 number = event.talks_list.index(talk)
                                 reply = (
                                     context.user_data['localisation'][str(event.get_date())]
@@ -77,8 +93,8 @@ def perform_search(update: Update, context: CallbackContext):
                                 )
                                 reply_messages.append(reply)
                                 break  # needed to give one talk only once
-            elif message in event.full_str_en().lower():
-                if message in event.str_en().lower():
+            elif any(message in event.full_str_en().lower() for message in message_variants):
+                if any(message in event.str_en().lower() for message in message_variants):
                     reply = (
                         context.user_data['localisation'][str(event.get_date())]
                         + '\n'
@@ -96,7 +112,7 @@ def perform_search(update: Update, context: CallbackContext):
                 else:
                     for talk in event.talks_list:
                         for part in talk.__dict__.values():
-                            if message in str(part).lower():
+                            if any(message in str(part).lower() for message in message_variants):
                                 number = event.talks_list.index(talk)
                                 reply = (
                                     context.user_data['localisation'][str(event.get_date())]
@@ -106,12 +122,12 @@ def perform_search(update: Update, context: CallbackContext):
                                 reply_messages.append(reply)
                                 break
         else:
-            if message in event.str_ru().lower():
+            if any(message in event.str_ru().lower() for message in message_variants):
                 reply = (
                     context.user_data['localisation'][str(event.get_date())] + '\n' + event.str_ru()
                 )
                 reply_messages.append(reply)
-            elif message in event.str_en().lower():
+            elif any(message in event.str_en().lower() for message in message_variants):
                 reply = (
                     context.user_data['localisation'][str(event.get_date())] + '\n' + event.str_en()
                 )
