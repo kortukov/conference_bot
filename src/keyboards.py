@@ -8,6 +8,7 @@ def main_menu_keyboard(context: CallbackContext):
         [context.user_data['localisation']['SHOWPROGRAM']],
         [context.user_data['localisation']['SHOWPROGRAMTIME']],
         [context.user_data['localisation']['SEARCHPROGRAM']],
+        [context.user_data['localisation']['CURRENT']],
         [context.user_data['localisation']['SENDPROGRAM'], context.user_data['localisation']['FEEDBACK']],
         [context.user_data['localisation']['LANGUAGE']],
     ]

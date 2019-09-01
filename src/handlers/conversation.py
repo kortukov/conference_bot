@@ -89,6 +89,10 @@ def create_coversation_handler(data_keeper):
                     Filters.regex('^(Отмеченные доклады|Marked talks)$'),
                     mark_talks.show_marked_talks,
                 ),
+                MessageHandler(
+                    Filters.regex('^(Текущие события|Current events)$'),
+                    main_menu.show_current,
+                ),
             ],
 
             data_keeper.MARKED: [

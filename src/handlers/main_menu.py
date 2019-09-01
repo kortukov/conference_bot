@@ -1,5 +1,7 @@
 import logging
+import time
 
+import telegram
 from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
@@ -93,6 +95,42 @@ def send_pdf(update: Update, context: CallbackContext):
 
     reply_keyboard = keyboards.main_menu_keyboard(context)
 
+    update.message.reply_text(
+        context.user_data['localisation']['HELLO'],
+        reply_markup=ReplyKeyboardMarkup(
+            reply_keyboard, one_time_keyboard=True, resize_keyboard=True
+        ),
+    )
+
+    return dk.MENU
+
+
+def show_current(update: Update, context: CallbackContext):
+    user = update.message.from_user
+    logger.info("User %s %s username:%s: show_current", user.first_name, user.last_name, user.username)
+    #current_moment = time.time()
+    current_moment = 1537783200 # 28.09.18 13:00
+
+    current_sections_messages = []
+    for event in context.user_data['event_list']:
+        if event.ts_begin <= current_moment <= event.ts_end:
+
+            if context.user_data['lang'] == 'ru':
+                current_sections_messages.append(event.str_ru())
+            else:
+                current_sections_messages.append(event.str_en())
+
+    if not current_sections_messages:
+        current_sections_messages.append(context.user_data['localisation']['NOCURRENT'])
+
+    for message in current_sections_messages:
+        context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text=message,
+            parse_mode=telegram.ParseMode.HTML
+        )
+
+    reply_keyboard = keyboards.main_menu_keyboard(context)
     update.message.reply_text(
         context.user_data['localisation']['HELLO'],
         reply_markup=ReplyKeyboardMarkup(

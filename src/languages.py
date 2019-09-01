@@ -15,6 +15,7 @@ localisation_ru = {
     'CONFLICTMESSAGE': 'Эти доклады пересекаются по времени:',
     'NOTIFICATIONADDED': '<b>Вам придёт сообщение за десять минут до доклада:</b>\n',
     'NOTIFICATIONREMOVED': '<b>Уведомление отменено.</b>',
+    'NOCURRENT': 'В данный момент никакие секции не идут.',
     # BUTTONS
     'SHOWPROGRAM': 'Показать программу по секциям',
     'SHOWPROGRAMTIME': 'Показать программу по времени',
@@ -28,6 +29,7 @@ localisation_ru = {
     'FEEDBACK': 'Оставить фидбек',
     'MARKED': 'Отмеченные доклады',
     'CONFLICTS': 'Пересечения',
+    'CURRENT': 'Текущие события',
     # SECTIONS
     'PLENARY': 'Пленарная секция',
     'RESEARCH': 'Исследовательская секция',
@@ -53,7 +55,7 @@ localisation_en = {
     'CONFLICTMESSAGE': 'This talks have time conflicts:',
     'NOTIFICATIONADDED': '<b>You will recieve a message 10 minutes before the talk:</b>\n',
     'NOTIFICATIONREMOVED': '<b>Notification cancelled</b>.',
-
+    'NOCURRENT': 'No sections at this moment.',
     # BUTTONS
     'SHOWPROGRAM': 'Show the conference program',
     'SHOWPROGRAMTIME': 'Show program by time',
@@ -67,6 +69,7 @@ localisation_en = {
     'FEEDBACK': 'Leave feedback',
     'MARKED': 'Marked talks',
     'CONFLICTS': 'Conflicts',
+    'CURRENT': 'Current events',
     # SECTIONS
     'PLENARY': 'Plenary session',
     'RESEARCH': 'Research Papers Session',
