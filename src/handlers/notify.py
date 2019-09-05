@@ -1,4 +1,5 @@
 import logging
+import time
 
 import telegram
 from telegram import ReplyKeyboardMarkup, Update
@@ -9,6 +10,8 @@ import keyboards
 from . import mark_talks
 
 logger = logging.getLogger(__name__)
+
+MIN = 60
 
 dk = None
 
@@ -180,12 +183,20 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
 
 def execute_notifications(context: CallbackContext):
 
-    for chat_id in dk.notifications:
-        notify_list = dk.notifications[chat_id]
-        if notify_list:
-            for talk in notify_list:
-                message = 'Через 10 минут доклад:\n\n' + talk.str_ru(notification=True)
-                context.bot.send_message(chat_id=chat_id, text=message, parse_mode=telegram.ParseMode.HTML)
+    current_moment = time.time()
+
+    for user_id in dk.marks_and_notifications:
+        event_list = dk.create_user_event_list(user_id)
+        marked_list = dk.create_user_marked_list(user_id, event_list)
+        notified_list = dk.create_user_notified_list(user_id, marked_list)
+
+        if notified_list:
+            for talk in notified_list:
+                talk_ts = talk.start_ts
+                logger.critical(talk_ts - current_moment)
+                if 9*MIN <= talk_ts - current_moment <= 10*MIN:
+                    message = 'Через 10 минут доклад:\n\n' + talk.str_ru(notification=True)
+                    context.bot.send_message(chat_id=user_id, text=message, parse_mode=telegram.ParseMode.HTML)
 
 
 
