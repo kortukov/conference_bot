@@ -37,7 +37,8 @@ class DataKeeper:
         # paths to data
         self.PROGRAM_PATH = '../program2018.pdf'
 
-    def load_marks_and_notifications(self):
+    @staticmethod
+    def load_marks_and_notifications():
         try:
             f = open(MARKS_AND_NOTIFICATIONS_PATH, 'rb')
             marks_and_notifications = pickle.load(f)
