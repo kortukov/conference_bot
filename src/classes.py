@@ -46,6 +46,7 @@ class BaseEvent(object):
         self.event_type = event_type
         self.title_ru = title_ru
         self.title_en = title_en
+        self.talks_list = []
 
     def __str__(self):
         return (
@@ -259,7 +260,7 @@ class Talk:
         return get_place(self._hall, eng=True)
 
     def __repr__(self):
-        return self.str_ru(True)
+        return self.str_ru(False, True)
 
     def __eq__(self, other):
         if (
@@ -282,7 +283,7 @@ class Talk:
             result = result + "Докладчик:\n\t" + self.speaker + '\n'
         if self.ts_begin and self.ts_end:
             result = result + self.get_datetime_ru()
-        if self._hall and not short:
+        if self._hall is not None and not short:
             result = result + "Зал: <b>" + self.hall_ru + '</b>\n'
 
         if notification:
@@ -311,7 +312,7 @@ class Talk:
             result = result + "Speaker:\n\t" + self.speaker + '\n'
         if self.ts_begin and self.ts_end:
             result = result + self.get_datetime_en()
-        if self._hall and not short:
+        if self._hall is not None and not short:
             result = result + "Hall: <b>" + self.hall_en + '</b>\n'
 
         if notification:

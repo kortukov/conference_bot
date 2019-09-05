@@ -95,4 +95,3 @@ class DataKeeper:
                 notified_list.append(talk)
 
         return notified_list
-    
