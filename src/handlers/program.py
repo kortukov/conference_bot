@@ -95,7 +95,6 @@ def send_data(update: Update, context: CallbackContext):
                 context.user_data['localisation']['DETAILS'] + '/desc' + str(result.number) + '\n'
             )
 
-
         reply_message += '\n'
     context.user_data['type'] = 'sections'
     context.user_data['message'] = reply_message

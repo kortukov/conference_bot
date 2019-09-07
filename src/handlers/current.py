@@ -21,9 +21,11 @@ def init_module(data_keeper):
 
 def show_current(update: Update, context: CallbackContext):
     user = update.message.from_user
-    logger.info("User %s %s username:%s: show_current", user.first_name, user.last_name, user.username)
-    #current_moment = time.time()
-    current_moment = 1537790400 # 28.09.18 15:00
+    logger.info(
+        "User %s %s username:%s: show_current", user.first_name, user.last_name, user.username
+    )
+    # current_moment = time.time()
+    current_moment = 1537790400  # 28.09.18 15:00
     day = 24
     current_sections_messages = []
     for event in context.user_data['event_list']:
@@ -37,7 +39,10 @@ def show_current(update: Update, context: CallbackContext):
 
             if isinstance(event, FullEvent) or isinstance(event, Other):
                 event_message += (
-                    context.user_data['localisation']['DETAILS'] + '/desc' + str(event.number) + '\n'
+                    context.user_data['localisation']['DETAILS']
+                    + '/desc'
+                    + str(event.number)
+                    + '\n'
                 )
             current_sections_messages.append(event_message)
     context.user_data['day'] = day
@@ -56,7 +61,6 @@ def show_current(update: Update, context: CallbackContext):
                 reply_keyboard, one_time_keyboard=True, resize_keyboard=True
             ),
         )
-
 
     context.user_data['type'] = 'current'
     context.user_data['messages'] = current_sections_messages

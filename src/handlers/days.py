@@ -63,5 +63,3 @@ def back_to_days(update: Update, context: CallbackContext):
     )
 
     return dk.DAYS
-
-

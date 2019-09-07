@@ -69,7 +69,6 @@ class DataKeeper:
                     if talk.title in marked_notified_dict:
                         talk.is_marked = True
 
-
         return user_event_list
 
     def create_user_marked_list(self, user_id, user_event_list):

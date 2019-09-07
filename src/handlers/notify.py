@@ -64,9 +64,9 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
 
     # Sending previous message again, but updated
     if (
-            context.user_data['type'] == 'sections'
-            or context.user_data['type'] == 'time'
-            or context.user_data['type'] == 'current'
+        context.user_data['type'] == 'sections'
+        or context.user_data['type'] == 'time'
+        or context.user_data['type'] == 'current'
     ):
         day = context.user_data['day']
         needed_description_number = context.user_data['description_number']
@@ -88,7 +88,9 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
         reply_keyboard = keyboards.back_to_begin_keyboard(context)
 
         if notification_added:
-            added_message = context.user_data['localisation']['NOTIFICATIONADDED'] + '\n' + title_to_notify
+            added_message = (
+                context.user_data['localisation']['NOTIFICATIONADDED'] + '\n' + title_to_notify
+            )
         else:
             added_message = context.user_data['localisation']['NOTIFICATIONREMOVED']
 
@@ -129,13 +131,16 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
 
         # dirty workaround to remove previous messages
         reply_messages = [
-            message for message in reply_messages
+            message
+            for message in reply_messages
             if context.user_data['localisation']['NOTIFICATIONADDED'] not in message
             and context.user_data['localisation']['NOTIFICATIONREMOVED'] not in message
         ]
 
         if notification_added:
-            reply_messages.append(context.user_data['localisation']['NOTIFICATIONADDED'] + '\n' + title_to_notify)
+            reply_messages.append(
+                context.user_data['localisation']['NOTIFICATIONADDED'] + '\n' + title_to_notify
+            )
         else:
             reply_messages.append(context.user_data['localisation']['NOTIFICATIONREMOVED'])
 
@@ -172,7 +177,9 @@ def notify_and_unnotify_talk(update: Update, context: CallbackContext):
             )
 
         if notification_added:
-            reply_message = context.user_data['localisation']['NOTIFICATIONADDED'] + '\n' + title_to_notify
+            reply_message = (
+                context.user_data['localisation']['NOTIFICATIONADDED'] + '\n' + title_to_notify
+            )
         else:
             reply_message = context.user_data['localisation']['NOTIFICATIONREMOVED']
 
@@ -200,9 +207,8 @@ def execute_notifications(context: CallbackContext):
             for talk in notified_list:
                 talk_ts = talk.ts_begin
                 logger.critical(talk_ts - current_moment)
-                if 9*MIN <= talk_ts - current_moment <= 10*MIN:
+                if 9 * MIN <= talk_ts - current_moment <= 10 * MIN:
                     message = 'Через 10 минут доклад:\n\n' + talk.str_ru(notification=True)
-                    context.bot.send_message(chat_id=user_id, text=message, parse_mode=telegram.ParseMode.HTML)
-
-
-
+                    context.bot.send_message(
+                        chat_id=user_id, text=message, parse_mode=telegram.ParseMode.HTML
+                    )

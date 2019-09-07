@@ -166,11 +166,11 @@ class FullEvent(BaseEvent):
             return False
 
         if (
-                self.title_ru == other.title_ru
-                and self.title_en == other.title_en
-                and self.place_id == other.place_id
-                and self.ts_begin == other.ts_begin
-                and self.ts_end == other.ts_end
+            self.title_ru == other.title_ru
+            and self.title_en == other.title_en
+            and self.place_id == other.place_id
+            and self.ts_begin == other.ts_begin
+            and self.ts_end == other.ts_end
         ):
             if len(self.talks_list) != len(other.talks_list):
                 return False
@@ -264,12 +264,12 @@ class Talk:
 
     def __eq__(self, other):
         if (
-                self.title == other.title
-                and self.authors == other.authors
-                and self.speaker == other.speaker
-                and self._hall == other._hall
-                and self.ts_begin == other.ts_begin
-                and self.ts_end == other.ts_end
+            self.title == other.title
+            and self.authors == other.authors
+            and self.speaker == other.speaker
+            and self._hall == other._hall
+            and self.ts_begin == other.ts_begin
+            and self.ts_end == other.ts_end
         ):
             return True
         else:

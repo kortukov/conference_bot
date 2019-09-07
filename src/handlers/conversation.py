@@ -178,7 +178,7 @@ def create_coversation_handler(data_keeper):
             + notify_handlers
             + unnotify_handlers,
             data_keeper.SENDING_CURRENT: [
-                MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),
+                MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning)
             ]
             + description_handlers,
             data_keeper.SENDING_DESCRIPTION_CURRENT: [

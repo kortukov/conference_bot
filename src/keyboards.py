@@ -9,12 +9,15 @@ def main_menu_keyboard(context: CallbackContext):
         [context.user_data['localisation']['SHOWPROGRAMTIME']],
         [context.user_data['localisation']['SEARCHPROGRAM']],
         [context.user_data['localisation']['CURRENT']],
-        [context.user_data['localisation']['SENDPROGRAM'], context.user_data['localisation']['FEEDBACK']],
+        [
+            context.user_data['localisation']['SENDPROGRAM'],
+            context.user_data['localisation']['FEEDBACK'],
+        ],
         [context.user_data['localisation']['LANGUAGE']],
     ]
 
     if len(context.user_data['marked_list']) != 0:
-        keyboard.insert(3,[context.user_data['localisation']['MARKED']])
+        keyboard.insert(3, [context.user_data['localisation']['MARKED']])
 
     return keyboard
 
@@ -43,7 +46,6 @@ def more_back_to_begin_keyboard(context: CallbackContext):
         [context.user_data['localisation']['BACK']],
         [context.user_data['localisation']['TOBEGINNING']],
     ]
-
 
 
 def days_keyboard(context: CallbackContext):
@@ -95,4 +97,3 @@ def conflicts_to_begin_keyboard(context: CallbackContext):
         [context.user_data['localisation']['CONFLICTS']],
         [context.user_data['localisation']['TOBEGINNING']],
     ]
-

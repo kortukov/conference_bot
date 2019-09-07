@@ -101,6 +101,3 @@ def send_pdf(update: Update, context: CallbackContext):
     )
 
     return dk.MENU
-
-
-
