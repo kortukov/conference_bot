@@ -67,7 +67,11 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                     )
 
     # Sending previous message again, but updated
-    if context.user_data['type'] == 'sections' or context.user_data['type'] == 'time':
+    if (
+        context.user_data['type'] == 'sections'
+        or context.user_data['type'] == 'time'
+        or context.user_data['type'] == 'current'
+    ):
         day = context.user_data['day']
         needed_description_number = context.user_data['description_number']
         event = next(
@@ -98,6 +102,8 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
             return dk.SENDING_DESCRIPTION
         elif context.user_data['type'] == 'time':
             return dk.SENDING_DESCRIPTION_TIME
+        elif context.user_data['type'] == 'current':
+            return dk.SENDING_DESCRIPTION_CURRENT
 
     elif context.user_data['type'] == 'search':
         reply_messages = context.user_data['search_reply_messages']

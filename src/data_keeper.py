@@ -33,6 +33,8 @@ class DataKeeper:
         self.FEEDBACK = 9
         self.MARKED = 10
         self.INTERSECTIONS = 11
+        self.SENDING_CURRENT = 12
+        self.SENDING_DESCRIPTION_CURRENT = 13
 
         # paths to data
         self.PROGRAM_PATH = '../program2018.pdf'

@@ -94,9 +94,10 @@ def send_data(update: Update, context: CallbackContext):
             reply_message += (
                 context.user_data['localisation']['DETAILS'] + '/desc' + str(result.number) + '\n'
             )
-            context.user_data['type'] = 'sections'
+
 
         reply_message += '\n'
+    context.user_data['type'] = 'sections'
     context.user_data['message'] = reply_message
     update.message.reply_text(
         reply_message,
@@ -152,7 +153,11 @@ def send_description(update: Update, context: CallbackContext):
     else:
         reply_message += (event.full_str_en()) + '\n'
 
-    if context.user_data['type'] == 'sections' or context.user_data['type'] == 'time':
+    if (
+        context.user_data['type'] == 'sections'
+        or context.user_data['type'] == 'time'
+        or context.user_data['type'] == 'current'
+    ):
         reply_keyboard = keyboards.back_to_begin_keyboard(context)
     elif context.user_data['type'] == 'search':
         reply_keyboard = keyboards.to_begin_keyboard(context)
@@ -169,6 +174,8 @@ def send_description(update: Update, context: CallbackContext):
         return dk.SENDING_DESCRIPTION
     elif context.user_data['type'] == 'time':
         return dk.SENDING_DESCRIPTION_TIME
+    elif context.user_data['type'] == 'current':
+        return dk.SENDING_DESCRIPTION_CURRENT
     elif context.user_data['type'] == 'search':
         update.message.reply_text(context.user_data['localisation']['WHATSEARCH'])
         return dk.SEARCHING
