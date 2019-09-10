@@ -154,7 +154,7 @@ def create_coversation_handler(data_keeper):
             + unnotify_handlers,
             data_keeper.DAYS: [
                 MessageHandler(
-                    Filters.regex('^(24 сентября|25 сентября|24 September|25 September)$'),
+                    Filters.regex('^(23 сентября|24 сентября|23 September|24 September)$'),
                     days.choose_days,
                 ),
                 MessageHandler(Filters.regex('^(В начало|To beginning)$'), main_menu.beginning),

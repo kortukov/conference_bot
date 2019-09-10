@@ -19,10 +19,12 @@ import pickle
 import jsonpickle
 import json
 
+PROGRAM_PATH = "../Program-2019.docx"
+
 
 def get_timestamp(date, hours, minutes):
     ''' date is day(int), hours and minutes are also (int)'''
-    dt = datetime(year=2018, month=9, day=date, hour=hours, minute=minutes)
+    dt = datetime(year=2019, month=9, day=date, hour=hours, minute=minutes)
     return time.mktime(dt.timetuple())
 
 
@@ -78,14 +80,14 @@ class ProgramParser:
             text = document.paragraphs[i].text
 
             if "Понедельник" in text:
-                current_date = 24
+                current_date = 23
             elif "Вторник" in text:
-                current_date = 25
+                current_date = 24
             else:
                 continue
             if "Poster" in text:
                 continue
-            if (document.paragraphs[i + 1].text) == "":  # leaving tables out
+            if document.paragraphs[i + 1].text == "":  # leaving tables out
                 continue
 
             current_time = document.paragraphs[i].text.split()[3]
@@ -139,7 +141,7 @@ class ProgramParser:
                 # now checking if list of talks is needed
                 j = 1
                 list_needed = 0
-                while not "//" in document.paragraphs[i + 2 + j].text:
+                while i + 2 + j < doc_length and not "//" in document.paragraphs[i + 2 + j].text:
                     for run in document.paragraphs[i + 2 + j].runs:
                         if run.bold:
                             list_needed = 1
@@ -159,7 +161,7 @@ class ProgramParser:
                 # filling the list of talks
                 talks_list = []
                 j = 1
-                while not "//" in document.paragraphs[i + 2 + j].text:
+                while i + 2 + j < doc_length and not "//" in document.paragraphs[i + 2 + j].text:
                     talks_list = talks_list + document.paragraphs[i + 2 + j].runs
                     j = j + 1
 
@@ -205,7 +207,7 @@ class ProgramParser:
                 description_lines = []
                 description = ""
                 j = 1
-                while not "//" in document.paragraphs[i + 2 + j].text:
+                while i + 2 + j < doc_length and not "//" in document.paragraphs[i + 2 + j].text:
                     description_lines = description_lines + document.paragraphs[i + 2 + j].runs
                     j = j + 1
                 for t in description_lines:
@@ -235,7 +237,7 @@ if __name__ == '__main__':
         sys.exit("Usage: python3 classes.py [pickle / json]\nDefault is printing.")
 
     parser = ProgramParser()
-    event_list = parser.parse_program("../Program-2018_v4.docx")
+    event_list = parser.parse_program(PROGRAM_PATH)
 
     if mode == 'print':
         for event in event_list:

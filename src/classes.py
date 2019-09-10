@@ -275,6 +275,9 @@ class Talk:
         else:
             return False
 
+    def __hash__(self):
+        return hash(self.title)
+
     def str_ru(self, short=False, notification=False):
         result = "<b>" + self.title + '</b>\n'
         if self.authors:

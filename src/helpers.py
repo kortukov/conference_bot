@@ -73,7 +73,7 @@ def create_times_list(day):
 
 def create_all_times_regex():
     all_times = []
-    for day in range(24, 26):
+    for day in range(23, 25):
         times_list = create_times_list(day)
         all_times.extend(times_list)
     all_times = list(set(all_times))

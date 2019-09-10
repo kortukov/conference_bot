@@ -50,8 +50,8 @@ def more_back_to_begin_keyboard(context: CallbackContext):
 
 def days_keyboard(context: CallbackContext):
     keyboard = [
+        [context.user_data['localisation']['23']],
         [context.user_data['localisation']['24']],
-        [context.user_data['localisation']['25']],
         [context.user_data['localisation']['TOBEGINNING']],
     ]
     return keyboard
@@ -68,7 +68,7 @@ def sections_keyboard(context: CallbackContext):
         [context.user_data['localisation']['BACK']],
         [context.user_data['localisation']['TOBEGINNING']],
     ]
-    if day == 24:
+    if day == 23:
         keyboard.insert(2, [context.user_data['localisation']['YOUNG']])
 
     return keyboard
