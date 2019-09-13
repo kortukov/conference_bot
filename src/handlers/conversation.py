@@ -95,7 +95,7 @@ def create_coversation_handler(data_keeper):
                 ),
                 MessageHandler(Filters.regex('^(English|Русский)$'), main_menu.change_lang),
                 MessageHandler(
-                    Filters.regex('^(Оставить фидбек|Leave feedback)$'), feedback.leave_feedback
+                    Filters.regex('^(Обратная связь|Leave feedback)$'), feedback.leave_feedback
                 ),
                 MessageHandler(
                     Filters.regex('^(Отмеченные доклады|Marked talks)$'),
