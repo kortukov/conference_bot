@@ -284,7 +284,7 @@ class Talk:
             result = result + "Авторы:\n\t" + self.authors + '\n'
         if self.speaker:
             result = result + "Докладчик:\n\t" + self.speaker + '\n'
-        if self.ts_begin and self.ts_end:
+        if self.ts_begin and self.ts_end and not short:
             result = result + self.get_datetime_ru()
         if self._hall is not None and not short:
             result = result + "Зал: <b>" + self.hall_ru + '</b>\n'
@@ -313,7 +313,7 @@ class Talk:
             result = result + "Authors:\n\t" + self.authors + '\n'
         if self.speaker:
             result = result + "Speaker:\n\t" + self.speaker + '\n'
-        if self.ts_begin and self.ts_end:
+        if self.ts_begin and self.ts_end and not short:
             result = result + self.get_datetime_en()
         if self._hall is not None and not short:
             result = result + "Hall: <b>" + self.hall_en + '</b>\n'
