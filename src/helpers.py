@@ -31,6 +31,7 @@ def create_times_without_food_list(day):
             if events[0].event_type == 'Food':
                 continue
         new_times_list.append(time_bounds)
+    new_times_list = sorted(new_times_list, key=lambda x: int(x.split(':')[0]))
     return new_times_list
 
 
