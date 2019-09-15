@@ -206,7 +206,7 @@ def execute_notifications(context: CallbackContext):
         if notified_list:
             for talk in notified_list:
                 talk_ts = talk.ts_begin
-                logger.critical(talk_ts - current_moment)
+                #logger.critical(talk_ts - current_moment)
                 if 9 * MIN <= talk_ts - current_moment <= 10 * MIN:
                     message = 'Через 10 минут доклад:\n\n' + talk.str_ru(notification=True)
                     context.bot.send_message(
