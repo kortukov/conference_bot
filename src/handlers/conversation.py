@@ -122,7 +122,12 @@ def create_coversation_handler(data_keeper):
                 ),
                 MessageHandler(Filters.regex('^(Назад|Back)$'), mark_talks.back_to_marked),
                 MessageHandler(Filters.regex('^(В начало|To the beginning)$'), main_menu.beginning),
-            ],
+            ]
+            + description_handlers
+            + mark_handlers
+            + unmark_handlers
+            + notify_handlers
+            + unnotify_handlers,
             data_keeper.FEEDBACK: [
                 MessageHandler(Filters.regex('^(В начало|To the beginning)$'), main_menu.beginning),
                 MessageHandler(Filters.text, feedback.save_feedback),

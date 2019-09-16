@@ -16,6 +16,7 @@ localisation_ru = {
     'NOTIFICATIONADDED': '<b>Бот пришлет вам сообщение за десять минут до доклада:</b>\n',
     'NOTIFICATIONREMOVED': '<b>Уведомление отменено.</b>',
     'MARKADDED': '<b>Событие отмечено. Посмотреть список отмеченных докладов можно в разделе "Отмеченные доклады" в главном меню.</b>',
+    'NOMARKED': 'Нет отмеченных докладов',
     'NOCURRENT': 'В данный момент никакие секции не идут.',
     # BUTTONS
     'SHOWPROGRAM': 'Показать программу по секциям',
@@ -57,6 +58,7 @@ localisation_en = {
     'NOTIFICATIONADDED': '<b>The bot will send you a message 10 minutes before the talk:</b>\n',
     'NOTIFICATIONREMOVED': '<b>Notification cancelled</b>.',
     'MARKADDED': '<b>Event marked. The list of marked events is availible in "Marked talks" section in the main menu.</b>',
+    'NOMARKED': 'No marked talks',
     'NOCURRENT': 'No sections at this moment.',
     # BUTTONS
     'SHOWPROGRAM': 'Show the conference program',

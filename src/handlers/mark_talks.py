@@ -218,6 +218,15 @@ def show_marked_talks(update: Update, context: CallbackContext):
             ),
         )
 
+    if not marked_list:
+        update.message.reply_text(
+            context.user_data['localisation']['NOMARKED'],
+            parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
+            reply_markup=ReplyKeyboardMarkup(
+                reply_keyboard, one_time_keyboard=True, resize_keyboard=True
+            ),
+        )
+
     return dk.MARKED
 
 
