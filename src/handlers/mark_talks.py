@@ -29,6 +29,9 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
         message,
     )
 
+    mark_added = False
+    added_message = None
+
     needed_number = int(message.split('k')[-1])  # markN
     for event in context.user_data['event_list']:
         if isinstance(event, FullEvent):
@@ -37,6 +40,7 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                     if not talk.is_marked:
                         talk.is_marked = True
                         context.user_data['marked_list'].append(talk)
+                        mark_added = True
                     else:
                         talk_to_unmark = next(
                             (
@@ -91,6 +95,10 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
             reply_message += (event.full_str_en()) + '\n'
         reply_keyboard = keyboards.back_to_begin_keyboard(context)
 
+
+        if mark_added:
+            added_message = context.user_data['localisation']['MARKADDED']
+
         update.message.reply_text(
             reply_message,
             parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
@@ -98,6 +106,15 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                 reply_keyboard, one_time_keyboard=True, resize_keyboard=True
             ),
         )
+        if added_message:
+            update.message.reply_text(
+                added_message,
+                parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
+                reply_markup=ReplyKeyboardMarkup(
+                    reply_keyboard, one_time_keyboard=True, resize_keyboard=True
+                ),
+            )
+
         if context.user_data['type'] == 'sections':
             return dk.SENDING_DESCRIPTION
         elif context.user_data['type'] == 'time':
@@ -126,6 +143,9 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                 else:
                     reply_messages[i] = context.user_data['marked_list'][-1].str_en()
 
+        if mark_added:
+            reply_messages.append(context.user_data['localisation']['MARKADDED'])
+
         reply_keyboard = keyboards.to_begin_keyboard(context)
 
         for reply_message in reply_messages:
@@ -152,6 +172,16 @@ def mark_and_unmark_talk(update: Update, context: CallbackContext):
                 reply_message = marked_talk.str_en()
             update.message.reply_text(
                 reply_message,
+                parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
+                reply_markup=ReplyKeyboardMarkup(
+                    reply_keyboard, one_time_keyboard=True, resize_keyboard=True
+                ),
+            )
+
+        if mark_added:
+            added_message = context.user_data['localisation']['MARKADDED']
+            update.message.reply_text(
+                added_message,
                 parse_mode=telegram.ParseMode.HTML,  # this is needed for bold text
                 reply_markup=ReplyKeyboardMarkup(
                     reply_keyboard, one_time_keyboard=True, resize_keyboard=True
