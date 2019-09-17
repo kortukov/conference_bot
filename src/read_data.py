@@ -207,7 +207,19 @@ class ProgramParser:
 
                     j = j + 1
 
-            if isinstance(event, Other):  # Looking for description
+                if not event.talks_list:
+                    talk = Talk(
+                        title=event.title_ru,
+                        authors='',
+                        speaker='',
+                        hall=current_place,
+                        talk_number=talks_counter,
+                    )
+
+                    event.talks_list.append(talk)
+                    talks_counter += 1
+
+            if isinstance(event, Other):  # Looking for descriptio
                 description_lines = []
                 description = ""
                 j = 1

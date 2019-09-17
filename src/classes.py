@@ -126,28 +126,6 @@ class Food(SimpleEvent):
         super().__init__(ts_begin, ts_end, place_id, "Food", title_ru, title_en)
 
 
-class Other(SimpleEvent):
-    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en, number):
-        self.description = None
-        self.number = number
-        super().__init__(ts_begin, ts_end, place_id, "Other", title_ru, title_en)
-
-    def __str__(self):
-        return super().__str__()
-
-    def full_str_ru(self):
-        result = ""
-        result = super().str_ru() + '\n\n'
-        if self.description is not None:
-            result += "Описание:\n\t" + self.description
-        return result
-
-    def full_str_en(self):
-        result = ""
-        result = super().str_en() + '\n\n'
-        if self.description is not None:
-            result += "Description:\n\t" + self.description
-        return result
 
 
 # Events with description: Plenary session, research session, Young researchers, other with description
@@ -215,6 +193,11 @@ class FullEvent(BaseEvent):
         for index, talk in enumerate(self.talks_list):
             talk.ts_begin = event_begin + (index * (times_diff / num_of_talks))
             talk.ts_end = event_begin + ((index + 1) * (times_diff / num_of_talks))
+
+
+class Other(FullEvent):
+    def __init__(self, ts_begin, ts_end, place_id, title_ru, title_en, number):
+        super().__init__(ts_begin, ts_end, place_id, "Other", title_ru, title_en, number)
 
 
 class Plenary(FullEvent):
