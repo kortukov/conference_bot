@@ -19,7 +19,7 @@ import pickle
 import jsonpickle
 import json
 
-PROGRAM_PATH = "../Program-2019.docx"
+PROGRAM_PATH = "../Program-2019_v1.docx"
 
 
 def get_timestamp(date, hours, minutes):
@@ -80,8 +80,12 @@ class ProgramParser:
             text = document.paragraphs[i].text
 
             if "Понедельник" in text:
+                if 'Понедельник, 23 сентября 2019 г' in text:
+                    continue
                 current_date = 23
             elif "Вторник" in text:
+                if 'Вторник, 24 сентября 2019 г' in text:
+                    continue
                 current_date = 24
             else:
                 continue
@@ -224,7 +228,7 @@ class ProgramParser:
             if isinstance(event, FullEvent):
                 event.calculate_talk_times()
 
-        return event_list
+        return event_list[:-1]
 
 
 if __name__ == '__main__':
