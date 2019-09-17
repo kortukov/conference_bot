@@ -211,7 +211,7 @@ def create_coversation_handler(data_keeper):
                 ),
                 MessageHandler(
                     Filters.regex(
-                        '(Семинары, воркшопы, мастер-классы|Workshops, seminars, master-classes)$'
+                        '(Семинары, воркшопы и другое|Workshops, seminars and other events)$'
                     ),
                     program.send_data,
                 ),

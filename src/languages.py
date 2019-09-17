@@ -36,7 +36,7 @@ localisation_ru = {
     'PLENARY': 'Пленарная секция',
     'RESEARCH': 'Исследовательская секция',
     'YOUNG': 'Конференция молодых учёных',
-    'WORKSHOPS': 'Семинары, воркшопы, мастер-классы',
+    'WORKSHOPS': 'Семинары, воркшопы и другое',
     'FOOD': 'Еда',
     'DETAILS': 'Подробнее: ',
 }
@@ -78,7 +78,7 @@ localisation_en = {
     'PLENARY': 'Plenary session',
     'RESEARCH': 'Research Papers Session',
     'YOUNG': 'PhD and student showcase',
-    'WORKSHOPS': 'Workshops, seminars, master-classes',
+    'WORKSHOPS': 'Workshops, seminars and other events',
     'FOOD': 'Food',
     'DETAILS': 'Details: ',
 }
