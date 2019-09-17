@@ -24,8 +24,8 @@ def show_current(update: Update, context: CallbackContext):
     logger.info(
         "User %s %s username:%s: show_current", user.first_name, user.last_name, user.username
     )
-    # current_moment = time.time()
-    current_moment = 1569240000  # 23.09.19 15:00
+    current_moment = time.time()
+    #current_moment = 1569240000  # 23.09.19 15:00
     day = 23
     current_sections_messages = []
     for event in context.user_data['event_list']:
