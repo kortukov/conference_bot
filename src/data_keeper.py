@@ -37,7 +37,7 @@ class DataKeeper:
         self.SENDING_DESCRIPTION_CURRENT = 13
 
         # paths to data
-        self.PROGRAM_PATH = '../program2019.pdf'
+        self.PROGRAM_PATH = '../Program-2019.pdf'
 
     @staticmethod
     def load_marks_and_notifications():
