@@ -19,7 +19,7 @@ import pickle
 import jsonpickle
 import json
 
-PROGRAM_PATH = "../Program-2019_v1.docx"
+PROGRAM_PATH = "../Program-2019_v3.docx"
 
 
 def get_timestamp(date, hours, minutes):
