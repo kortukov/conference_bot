@@ -191,8 +191,8 @@ class FullEvent(BaseEvent):
         times_diff = event_end - event_begin
         num_of_talks = len(self.talks_list)
         for index, talk in enumerate(self.talks_list):
-            talk.ts_begin = event_begin + (index * (times_diff / num_of_talks))
-            talk.ts_end = event_begin + ((index + 1) * (times_diff / num_of_talks))
+            talk.ts_begin = ((event_begin + (index * (times_diff / num_of_talks)))//60)*60
+            talk.ts_end = ((event_begin + ((index + 1) * (times_diff / num_of_talks)))//60)*60
 
 
 class Other(FullEvent):
